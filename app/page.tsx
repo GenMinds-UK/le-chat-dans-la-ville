@@ -1,3 +1,4 @@
+import AuthGate from "@/components/auth/AuthGate";
 import VoiceAgent from "@/components/VoiceAgent";
 
 export default function Home() {
@@ -14,7 +15,9 @@ export default function Home() {
         </a>{" "}
         — runs entirely in your browser via the Voice Agents API.
       </p>
-      <VoiceAgent />
+      <AuthGate>
+        <VoiceAgent />
+      </AuthGate>
     </main>
   );
 }

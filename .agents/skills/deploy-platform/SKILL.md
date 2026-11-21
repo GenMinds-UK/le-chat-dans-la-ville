@@ -13,7 +13,15 @@ description: How Le chat dans la ville uses Supabase (email and password auth, p
 | Vercel team | Generative Minds, `team_phLKd9Z5yGAU9sqBvryHDaD2` |
 | Vercel project | `le-chat-dans-la-ville`, `prj_vvL1loG2HXzJuybxkIh9fs22FPyO`, linked to the repo: every push to `main` deploys to production, other branches get previews |
 | Production URL | https://mistral-hack.genminds.co.uk (DNS is on Vercel, no records to add) |
-| Supabase organisation | Generative Minds, `yirczjlwmhxzzgbddrfr`. **No project yet**: creation was declined on the first attempt. Ask the user before trying again. Use region `eu-west-2` like their other projects. |
+| Supabase organisation | Generative Minds, `yirczjlwmhxzzgbddrfr` |
+| Supabase project | "Le Chat dans La Ville", ref `wsbrisncrrzctfypitse`, region `eu-west-2`, https://wsbrisncrrzctfypitse.supabase.co. Migration `0001_initial_schema` is applied; security advisors were clean. |
+
+Code in place: `lib/supabase/client.ts` (`getSupabaseBrowser`), `lib/supabase/server.ts`
+(`getSupabaseServer`, `getServerUser`), `lib/supabase/auth.ts` (`signUp`, `signIn`,
+`signOut`, `watchAuthUser`), `proxy.ts` (session refresh), and
+`components/auth/AuthForm.tsx` (takes `onSignedIn`; pass the store's `setUser`).
+Not yet done: mounting the form on the page, progress sync, protecting the voice route,
+and the Supabase variables on Vercel.
 
 `MISTRAL_API_KEY` is deliberately **not** set on Vercel yet. The voice route still
 accepts raw config from the browser with no sign-in, so with the key set anyone who
