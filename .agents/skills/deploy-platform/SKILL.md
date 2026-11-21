@@ -5,6 +5,21 @@ description: How Le chat dans la ville uses Supabase (email and password auth, p
 
 # Supabase and Vercel for this project
 
+## What exists (set up 2026-11-21)
+
+| Thing | Value |
+|---|---|
+| GitHub repo | `GenMinds-UK/le-chat-dans-la-ville` (private), production branch `main` |
+| Vercel team | Generative Minds, `team_phLKd9Z5yGAU9sqBvryHDaD2` |
+| Vercel project | `le-chat-dans-la-ville`, `prj_vvL1loG2HXzJuybxkIh9fs22FPyO`, linked to the repo: every push to `main` deploys to production, other branches get previews |
+| Production URL | https://mistral-hack.genminds.co.uk (DNS is on Vercel, no records to add) |
+| Supabase organisation | Generative Minds, `yirczjlwmhxzzgbddrfr`. **No project yet**: creation was declined on the first attempt. Ask the user before trying again. Use region `eu-west-2` like their other projects. |
+
+`MISTRAL_API_KEY` is deliberately **not** set on Vercel yet. The voice route still
+accepts raw config from the browser with no sign-in, so with the key set anyone who
+finds the URL could spend it. Set it only once the route requires a signed-in user
+and has the rate limit below.
+
 ## Ask before acting
 
 Confirm with the user before each of these, every time:
