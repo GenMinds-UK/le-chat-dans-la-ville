@@ -282,13 +282,25 @@ def prop_fountain():
     return outline(im)
 
 
+def box(x, y, w, h):
+    return {"x": x, "y": y, "w": w, "h": h}
+
+
+# The part of each prop the player cannot walk through, in image pixels.
+PROP_SOLID = {
+    "tree": box(10, 32, 12, 7), "bush": box(2, 8, 12, 7), "lamp": box(5, 27, 6, 4),
+    "bench": box(1, 4, 30, 11), "signpost": box(5, 19, 6, 4), "fence": box(0, 8, 16, 7),
+    "fountain": box(1, 16, 46, 23),
+}
+
+
 def build_props():
     props = {
         "tree": prop_tree(), "bush": prop_bush(), "lamp": prop_lamp(), "bench": prop_bench(),
         "signpost": prop_signpost(), "fence": prop_fence(), "fountain": prop_fountain(),
     }
     for n, im in props.items():
-        save(im, f"props/{n}.png", anchor="bottom-centre")
+        save(im, f"props/{n}.png", anchor="bottom-centre", solid=PROP_SOLID[n])
     return props
 
 
@@ -517,6 +529,222 @@ obbbbbbbbbbbbbbo
 ................
 ................
 """)
+icon("cake", {"r": "#e0483e", "p": "#ff8fb0", "b": "#d9903d", "d": "#cfd8e0"}, """
+................
+.......rr.......
+......orro......
+...oooooooooo...
+..owwwwwwwwwwo..
+..owpwwwpwwwpo..
+..oppwpppwpppo..
+..obbbbbbbbbbo..
+..obbbbbbbbbbo..
+..owwwwwwwwwwo..
+..obbbbbbbbbbo..
+..obbbbbbbbbbo..
+.oooooooooooooo.
+.oddddddddddddo.
+..oooooooooooo..
+................
+""")
+icon("roll", {"b": "#e0a04a", "L": "#f6d28f", "d": "#b86f2a"}, """
+................
+................
+................
+................
+.....oooooo.....
+...oobbbbbboo...
+..obbLbbbbLbbo..
+.obbbbLbbLbbbbo.
+.obbbbbLLbbbbbo.
+.obbbbLbbLbbbbo.
+.obddbbbbbbddbo.
+..oddddddddddo..
+...oooooooooo...
+................
+................
+................
+""")
+icon("biscuit", {"b": "#e6bb7a", "k": "#6b431d", "d": "#c9965a"}, """
+................
+................
+.....oooooo.....
+...oobbbbbboo...
+..obbbkbbbbbbo..
+..obbbbbbkbbbo..
+.obbkbbbbbbbbbo.
+.obbbbbkbbbbkbo.
+.obbbbbbbbbbbbo.
+.obkbbbbbkbbbdo.
+..obbbkbbbbbdo..
+..obbbbbbbkddo..
+...ooddddddoo...
+.....oooooo.....
+................
+................
+""")
+icon("thermometer", {"b": "#bfe6fb", "r": "#e0483e"}, """
+................
+............oo..
+...........owwo.
+..........owbwo.
+.........owbwo..
+........owbwo...
+.......owbwo....
+......owrwo.....
+.....owrwo......
+....owrwo.......
+..ooorwo........
+.orrrro.........
+.orrrro.........
+.orrrro.........
+..oooo..........
+................
+""")
+icon("cream", {"b": "#4aa3df", "B": "#8fd0f5", "p": "#ff8fb0"}, """
+................
+................
+................
+................
+..oooooooooooo..
+..obBBbbbbbbbo..
+..obbbbbbbbbbo..
+..oooooooooooo..
+..owwwwwwwwwwo..
+..owwwwppwwwwo..
+..owwwppppwwwo..
+..owwwwppwwwwo..
+..owwwwwwwwwwo..
+...oooooooooo...
+................
+................
+""")
+icon("toothbrush", {"b": "#3bb5a0", "B": "#7fdccb"}, """
+................
+................
+..oooooo........
+.owowowoo.......
+.owwwwwwo.......
+.obbbbbbo.......
+..ooooBbbo......
+......oBbbo.....
+.......oBbbo....
+........oBbbo...
+.........oBbbo..
+..........oBbbo.
+...........oBbo.
+............ooo.
+................
+................
+""")
+icon("eggs", {"e": "#fff1d6", "y": "#c9b48a", "d": "#a8926a"}, """
+................
+................
+................
+....oo....oo....
+...oeeo..oeeo...
+..oeweeooeweeo..
+..oeeeeooeeeeo..
+..oeeeeooeeeeo..
+.oooooooooooooo.
+.oyyyyyyyyyyyyo.
+.oyyyyyyyyyyyyo.
+.oydyyydyyydyyo.
+.oyyyyyyyyyyyyo.
+..oooooooooooo..
+................
+................
+""")
+icon("tomato", {"r": "#e8402f", "R": "#ff8f80", "g": "#3f9a4a"}, """
+................
+................
+.......oo.......
+....oooggooo....
+...orrggggrro...
+..orrgrggrgrro..
+..orRRrrrrrrro..
+.orrRrrrrrrrrro.
+.orrrrrrrrrrrro.
+.orrrrrrrrrrrro.
+.orrrrrrrrrrrro.
+..orrrrrrrrrro..
+...orrrrrrrro...
+....oooooooo....
+................
+................
+""")
+icon("water", {"a": "#bfe6fb", "b": "#4aa3df"}, """
+................
+......oooo......
+......obbo......
+......oooo......
+.....oawwao.....
+....oaawaaao....
+....oaawaaao....
+....oaaaaaao....
+....obbbbbbo....
+....obwwbbbo....
+....obbbbbbo....
+....oaaaaaao....
+....oaaaaaao....
+....oaaaaaao....
+....oooooooo....
+................
+""")
+icon("atm", {"g": "#c9ced8", "G": "#8d93a5", "k": "#3a3350", "a": "#a6e3a1", "y": "#f7c93e"}, """
+..oooooooooooo..
+..ogggggggggGo..
+..ogkkkkkkkkGo..
+..ogkaaaaaakGo..
+..ogkaawaaakGo..
+..ogkkkkkkkkGo..
+..ogggggggggGo..
+..ogwwwgkkkkGo..
+..ogwwwgggggGo..
+..ogwwwgyyygGo..
+..ogggggggggGo..
+..ogkkkkkkggGo..
+..ogggggggggGo..
+..oGGGGGGGGGGo..
+..oooooooooooo..
+................
+""")
+icon("safe", {"g": "#8d93a5", "G": "#6a7084", "k": "#3a3350", "y": "#f7c93e"}, """
+................
+.oooooooooooooo.
+.oggggggggggggo.
+.ogGGGGGGGGGGgo.
+.ogGggggggggGgo.
+.ogGggoooogyGgo.
+.ogGgowwwwoyGgo.
+.ogGgowkkwogGgo.
+.ogGgowkkwogGgo.
+.ogGgowwwwogGgo.
+.ogGggooooggGgo.
+.ogGGGGGGGGGGgo.
+.oggggggggggggo.
+.oooooooooooooo.
+..oo........oo..
+................
+""")
+icon("form", {"b": "#8d93a5", "k": "#4a6fd0", "g": "#4caf50"}, """
+................
+...ooooooooo....
+...owwwwwwwoo...
+...owkkkkwwwo...
+...owwwwwwwwo...
+...owbbbbbbwo...
+...owwwwwwwwo...
+...owbbbbbwwo...
+...owwwwwwwwo...
+...owbbbbbbwo...
+...owwwwwwwwo...
+...owggwbbbwo...
+...owwwwwwwwo...
+...oooooooooo...
+................
+................
+""")
 icon("cart", {"b": "#4a6fd0"}, """
 ................
 ................
@@ -680,6 +908,51 @@ oggggggggggo
 oggggggggggo
 oooooooooooo
 """.replace("ogggggggggg o", "oggggggggggo"))
+
+
+ui("key_e", {"k": "#2b2233", "g": "#cfc7b0"}, """
+................
+..oooooooooooo..
+.owwwwwwwwwwwwo.
+.owwwkkkkkkwwwo.
+.owwwkkwwwwwwwo.
+.owwwkkwwwwwwwo.
+.owwwkkkkkwwwwo.
+.owwwkkwwwwwwwo.
+.owwwkkwwwwwwwo.
+.owwwkkkkkkwwwo.
+.owwwwwwwwwwwwo.
+.oggggggggggggo.
+.oggggggggggggo.
+..oooooooooooo..
+................
+................
+""")
+ui("tap", {"g": "#e6d3a0"}, """
+................
+......oo........
+.....owwo.......
+.....owwo.......
+.....owwo.......
+.....owwooo.....
+.....owwowwoo...
+...ooowwowwowo..
+..owwowwwwwwwwo.
+..owwwwwwwwwwwo.
+...owwwwwwwwwgo.
+...owwwwwwwwgo..
+....owwwwwwwgo..
+.....owwwwggo...
+.....oooooooo...
+................
+""")
+ui("corner", {}, """
+ooooo
+owwwo
+owooo
+owo..
+ooo..
+""")
 
 
 def ui_panel():
@@ -866,7 +1139,7 @@ def building(w, h, roof, roof_d, wall, wall_d, door, awning=None, sign=None,
         d.rectangle((sx, 5, sx + 23, 24), fill="#fff6dc")
         paste(im, sign, sx + 4, 7)
     outline(im)
-    return im, {"door": {"x": dx + dw // 2, "y": h}}
+    return im, {"door": {"x": dx + dw // 2, "y": h}, "solid": box(0, 0, w, h)}
 
 
 def build_buildings():
@@ -898,9 +1171,39 @@ def build_buildings():
 
 # ---------------------------------------------------------------- interiors
 IW, IH = 240, 160
+FLOOR = box(0, 48, IW, IH - 48)  # where the player may stand
+COUNTER = box(47, 48, 146, 51)   # counter plus the strip behind it (staff only)
+# Six display stands per room: bottom-centre of each 24x16 stand. Item i sits on stand i.
+STANDS = [(16, 80), (16, 124), (72, 138), (168, 138), (224, 124), (224, 80)]
+PLANTS = [4, 220]                # x of the two pot plants (front corners)
 
 
-def interior(wall, wall_l, floor_a, floor_b, counter, counter_d, items, carpet=None, planks=False):
+def filler(kind, a, b):
+    """Decorative shelf stock. Deliberately generic so it is not mistaken for a shop item."""
+    im = new(16, 16)
+    d = ImageDraw.Draw(im)
+    if kind == "box":
+        d.rectangle((2, 5, 13, 15), fill=OL)
+        d.rectangle((3, 6, 12, 14), fill=a)
+        d.rectangle((3, 9, 12, 10), fill=b)
+    elif kind == "jar":
+        d.rectangle((4, 4, 11, 15), fill=OL)
+        d.rectangle((5, 7, 10, 14), fill=a)
+        d.rectangle((5, 5, 10, 6), fill=b)
+        d.point((6, 9), fill="#ffffff")
+    elif kind == "books":
+        for x, c, top in ((2, a, 5), (6, b, 7), (10, a, 4)):
+            d.rectangle((x, top, x + 4, 15), fill=OL)
+            d.rectangle((x + 1, top + 1, x + 3, 14), fill=c)
+    elif kind == "sack":
+        d.ellipse((2, 5, 13, 15), fill=OL)
+        d.ellipse((3, 6, 12, 14), fill=a)
+        d.rectangle((6, 3, 9, 5), fill=OL)
+        d.rectangle((7, 4, 8, 5), fill=b)
+    return im
+
+
+def interior(wall, wall_l, floor_a, floor_b, counter, counter_d, shelf, cloth, carpet=None, planks=False):
     bg = new(IW, IH)
     d = ImageDraw.Draw(bg)
     d.rectangle((0, 0, IW - 1, 47), fill=wall)
@@ -923,22 +1226,29 @@ def interior(wall, wall_l, floor_a, floor_b, counter, counter_d, items, carpet=N
         d.rectangle((104, 98, 135, IH - 1), fill=carpet[0])
         d.rectangle((104, 98, 105, IH - 1), fill=carpet[1])
         d.rectangle((134, 98, 135, IH - 1), fill=carpet[1])
-    for ux in (8, 92, 176):  # three shelf units on the back wall
+    for ux in (8, 92, 176):  # three shelf units on the back wall, decorative stock only
         d.rectangle((ux - 1, 3, ux + 56, 42), fill=OL)
         d.rectangle((ux, 4, ux + 55, 41), fill="#8a5a2b")
         for row in range(2):
             sy = 6 + row * 18
             d.rectangle((ux + 3, sy, ux + 52, sy + 15), fill="#5e3b1c")
             for i in range(3):
-                paste(bg, items[(i + row + ux // 80) % len(items)], ux + 4 + i * 16, sy)
+                paste(bg, shelf[(i + row + ux // 80) % len(shelf)], ux + 4 + i * 16, sy)
             d = ImageDraw.Draw(bg)
             d.rectangle((ux + 3, sy + 16, ux + 52, sy + 16), fill="#b9783f")
-    for px in (4, 220):  # pot plants in the back corners
-        d.rectangle((px + 3, 60, px + 12, 68), fill="#c9683a")
-        d.rectangle((px + 2, 58, px + 13, 60), fill="#a04e28")
-        blob(bg, px + 7.5, 50, 7, 8, "#3f9a4a", "#63bd5c", "#2f7a3c", px)
+    for cx, by in STANDS:  # display stands; the scene draws one item on each
+        d.rectangle((cx - 12, by - 16, cx + 11, by - 1), fill=OL)
+        d.rectangle((cx - 11, by - 15, cx + 10, by - 8), fill=cloth[0])
+        d.line((cx - 11, by - 15, cx + 10, by - 15), fill="#ffffff")
+        d.line((cx - 11, by - 8, cx + 10, by - 8), fill=cloth[1])
+        d.rectangle((cx - 11, by - 7, cx + 10, by - 2), fill=counter)
+        d.rectangle((cx - 8, by - 5, cx + 7, by - 4), fill=counter_d)
+    for px in PLANTS:  # pot plants in the front corners
+        d.rectangle((px + 3, 149, px + 12, 157), fill="#c9683a")
+        d.rectangle((px + 2, 147, px + 13, 149), fill="#a04e28")
+        blob(bg, px + 7.5, 139, 7, 8, "#3f9a4a", "#63bd5c", "#2f7a3c", px)
         d = ImageDraw.Draw(bg)
-        d.rectangle((px + 2, 57, px + 13, 57), fill=OL)
+        d.rectangle((px + 2, 146, px + 13, 146), fill=OL)
     d.rectangle((103, 151, 136, IH - 1), fill=OL)
     d.rectangle((104, 152, 135, IH - 1), fill="#b5443a")
     d.rectangle((108, 155, 131, 156), fill="#d96a5c")
@@ -955,89 +1265,178 @@ def interior(wall, wall_l, floor_a, floor_b, counter, counter_d, items, carpet=N
     d.rectangle((160, 58, 177, 71), fill="#8d93a5")
     d.rectangle((162, 60, 175, 64), fill="#a6e3a1")
     d.rectangle((162, 67, 175, 69), fill="#6a7084")
-    paste(fg, items[0], 56, 58)
-    paste(fg, items[1], 76, 58)
+    d.rectangle((62, 64, 71, 70), fill=OL)  # service bell
+    d.rectangle((63, 65, 70, 69), fill="#f7c93e")
+    d.rectangle((66, 62, 67, 64), fill=OL)
     return bg, fg
 
 
+# The six item icons of each shop, in the order they are placed on the stands.
+# content/venues.ts uses the same names; the scene takes them from venue.items[i].icon.
+SHOP_ITEMS = {
+    "bakery": ["bread", "croissant", "cupcake", "cake", "roll", "biscuit"],
+    "pharmacy": ["pills", "syrup", "bandage", "thermometer", "cream", "toothbrush"],
+    "supermarket": ["apple", "milk", "cheese", "eggs", "tomato", "water"],
+    "bank": ["coin", "banknote", "card", "atm", "safe", "form"],
+}
+
+
+SHOP_NPC = {"bakery": "baker", "pharmacy": "pharmacist", "supermarket": "cashier", "bank": "banker"}
+
+
 def build_interiors():
-    I = ICONS
     specs = {
         "bakery": dict(wall="#f6d9a8", wall_l="#fbe6bf", floor_a="#d9a066", floor_b="#b97f48",
-                       counter="#c9683a", counter_d="#a04e28", planks=True,
-                       items=[I["bread"], I["croissant"], I["cupcake"]]),
+                       counter="#c9683a", counter_d="#a04e28", planks=True, cloth=("#fff6dc", "#e6d3a0"),
+                       shelf=[filler("sack", "#f4f1ea", "#b9783f"), filler("jar", "#e0483e", "#f4f1ea"),
+                              filler("box", "#e2c58e", "#c9683a")]),
         "pharmacy": dict(wall="#d5efe4", wall_l="#e9f8f1", floor_a="#f4f6f1", floor_b="#bfe3d2",
-                         counter="#3f9a6a", counter_d="#2f7a52",
-                         items=[I["pills"], I["syrup"], I["bandage"]]),
+                         counter="#3f9a6a", counter_d="#2f7a52", cloth=("#f4f6f1", "#cfd8cc"),
+                         shelf=[filler("box", "#f4f6f1", "#3bb5a0"), filler("jar", "#8a5a2b", "#f4f6f1"),
+                                filler("box", "#bfe3d2", "#f4f6f1")]),
         "supermarket": dict(wall="#fdf3c8", wall_l="#fffbe6", floor_a="#e6ebf2", floor_b="#c9d3e3",
-                            counter="#4a7fd0", counter_d="#345fa6",
-                            items=[I["apple"], I["milk"], I["cheese"]]),
+                            counter="#4a7fd0", counter_d="#345fa6", cloth=("#fdf3c8", "#e3d28e"),
+                            shelf=[filler("box", "#f5a623", "#fff6dc"), filler("jar", "#6cc070", "#8d93a5"),
+                                   filler("sack", "#e2c58e", "#8a5a2b")]),
         "bank": dict(wall="#d9d3c6", wall_l="#e9e6de", floor_a="#efe6d2", floor_b="#e0d3b6",
                      counter="#6b4a2b", counter_d="#4a321c", carpet=("#b5443a", "#f7c93e"),
-                     items=[I["coin"], I["banknote"], I["card"]]),
+                     cloth=("#e9e6de", "#c4c0b4"),
+                     shelf=[filler("books", "#2c3e6b", "#7d2f2f"), filler("books", "#3f6f4a", "#2c3e6b"),
+                            filler("box", "#c4c0b4", "#8d93a5")]),
     }
     out = {}
-    spots = dict(npcFeet={"x": 120, "y": 76}, talkSpot={"x": 120, "y": 118},
-                 entry={"x": 120, "y": 150}, exit={"x": 104, "y": 152, "w": 32, "h": 8})
+    solids = [box(0, 0, IW, 48), COUNTER]
+    solids += [box(cx - 12, by - 16, 24, 16) for cx, by in STANDS]
+    solids += [box(px + 2, 146, 12, 12) for px in PLANTS]
+    spots = dict(
+        npcFeet={"x": 120, "y": 76}, talkSpot={"x": 120, "y": 110},
+        entry={"x": 120, "y": 144}, exit=box(104, 152, 32, 8),
+        floor=FLOOR, solids=solids,
+        itemSpots=[{"x": cx, "y": by - 10} for cx, by in STANDS],
+    )
     for n, s in specs.items():
         bg, fg = interior(**s)
-        save(bg, f"interiors/{n}_bg.png", **spots)
+        save(bg, f"interiors/{n}_bg.png", **spots, items=SHOP_ITEMS[n], npc=SHOP_NPC[n])
         save(fg, f"interiors/{n}_fg.png", layer="draw above NPC")
         out[n] = (bg, fg)
     return out
 
 
-# ---------------------------------------------------------------- preview sheet
-def preview(cat, tiles, props, npcs, buildings, interiors):
-    W, H = 400, 240
-    town = new(W, H)
-    rnd = random.Random(5)
-    for ty in range(H // T):
-        for tx in range(W // T):
+# ---------------------------------------------------------------- town layout
+# The town is level data, generated here so the preview shows the real map and the
+# scene only has to read public/game/town.json. Coordinates below are "inner" pixels
+# (the 30x22-tile playable town); TOWN_M tiles of forest surround it on every side.
+TOWN_COLS, TOWN_ROWS, TOWN_M = 30, 22, 10
+TILE_IDS = {"grass": 0, "grass_tuft": 1, "flowers": 2, "path": 3, "cobble": 4, "water_0": 5, "water_1": 6}
+
+
+def build_town():
+    M = TOWN_M
+    W, H = TOWN_COLS + 2 * M, TOWN_ROWS + 2 * M
+    OX = OY = M * T
+    rnd = random.Random(11)
+    grid = [[0] * W for _ in range(H)]
+    for ty in range(H):
+        for tx in range(W):
             r = rnd.random()
-            t = "grass" if r < 0.7 else "grass_tuft" if r < 0.9 else "flowers"
-            if ty in (7, 8) or tx in (12, 13):
-                t = "path"
-            if 10 <= tx <= 15 and 6 <= ty <= 9:
-                t = "cobble"
-            if tx >= 22 and ty >= 12:
-                t = "water_0"
-            paste(town, tiles[t], tx * T, ty * T)
-    paste(town, buildings["bakery"], 16, 28)
-    paste(town, buildings["pharmacy"], 280, 28)
-    paste(town, buildings["supermarket"], 16, 150)
-    paste(town, buildings["bank"], 232, 150)
-    paste(town, buildings["house_red"], 130, 44)
-    paste(town, props["fountain"], 184, 96)
-    for x, y in ((120, 150), (150, 190), (370, 120), (2, 104)):
-        paste(town, props["tree"], x, y)
-    paste(town, props["lamp"], 170, 80)
-    paste(town, props["bench"], 236, 104)
-    paste(town, props["signpost"], 120, 100)
-    paste(town, props["bush"], 220, 60)
-    for i in range(4):
-        paste(town, props["fence"], 320 + i * 16, 160)
-    for i in range(8):
-        paste(town, cat.crop((i * 32, 0, i * 32 + 32, 32)), 130 + i * 30, 118 if i % 2 else 126)
+            grid[ty][tx] = 0 if r < 0.72 else 1 if r < 0.93 else 2
+
+    def fill(tx0, ty0, tx1, ty1, name):  # inner tile coords, inclusive
+        for ty in range(ty0, ty1 + 1):
+            for tx in range(tx0, tx1 + 1):
+                grid[ty + M][tx + M] = TILE_IDS[name]
+
+    fill(2, 7, 27, 8, "path")        # north street, in front of bakery and pharmacy
+    fill(2, 17, 27, 18, "path")      # south street, in front of supermarket and bank
+    fill(14, 9, 15, 16, "path")      # lane joining them
+    fill(11, 10, 18, 15, "cobble")   # plaza
+    fill(21, 20, 26, 23, "water_0")  # pond
+    fill(14, 3, 15, 6, "flowers")    # little garden between the houses
+
+    buildings = [
+        ("bakery", "bakery", 80, 112), ("house_red", None, 184, 112),
+        ("house_blue", None, 296, 112), ("pharmacy", "pharmacy", 400, 112),
+        ("supermarket", "supermarket", 80, 272), ("bank", "bank", 400, 272),
+    ]
+    props = [
+        ("fountain", 240, 222), ("bench", 196, 254), ("bench", 284, 254), ("bench", 240, 106),
+        ("tree", 240, 78), ("lamp", 140, 112), ("lamp", 340, 112), ("lamp", 140, 272), ("lamp", 340, 272),
+        ("signpost", 164, 160), ("tree", 150, 236), ("tree", 330, 236), ("tree", 18, 214),
+        ("tree", 462, 214), ("tree", 170, 346), ("tree", 250, 344), ("tree", 300, 348),
+        ("tree", 456, 340), ("bush", 136, 186), ("bush", 344, 186), ("bush", 20, 164), ("bush", 460, 164),
+        ("bush", 208, 334),
+    ]
+    props += [("fence", 24 + i * 16, 336) for i in range(7)]
+    pond = box(21 * T, 20 * T, 6 * T, 4 * T)
+    # forest in the margin: a jittered grid of trees, none inside the playable town
+    iw, ih = TOWN_COLS * T, TOWN_ROWS * T
+    for gy in range(-M * T + 30, ih + M * T + 20, 26):
+        for gx in range(-M * T + 8, iw + M * T, 30):
+            x = gx + rnd.randrange(-8, 9) + (15 if (gy // 26) % 2 else 0)
+            y = gy + rnd.randrange(-6, 7)
+            inside = -14 <= x <= iw + 14 and 4 <= y <= ih + 38
+            in_pond = (pond["x"] - 14 <= x <= pond["x"] + pond["w"] + 14
+                       and pond["y"] - 4 <= y <= pond["y"] + pond["h"] + 40)
+            if not inside and not in_pond:
+                props.append(("tree", x, y))
+
+    town = {
+        "tile": T, "cols": W, "rows": H, "tiles": grid,
+        "tileNames": list(TILE_IDS),
+        "play": box(OX + 4, OY + 8, iw - 8, ih - 12),
+        "spawn": {"x": OX + 240, "y": OY + 172},
+        "solids": [box(pond["x"] + OX, pond["y"] + OY, pond["w"], pond["h"])],
+        "buildings": [{"sprite": f"buildings/{n}", "venue": v, "x": x + OX, "y": y + OY} for n, v, x, y in buildings],
+        "props": [{"sprite": f"props/{n}", "x": x + OX, "y": y + OY} for n, x, y in props],
+    }
+    with open(os.path.join(OUT, "town.json"), "w") as f:
+        json.dump(town, f, separators=(",", ":"))
+    return town
+
+
+# ---------------------------------------------------------------- preview sheet
+def preview(cat, tiles, props, npcs, buildings, interiors, town):
+    tile_ims = list(tiles.values())
+    full = new(town["cols"] * T, town["rows"] * T)
+    for ty, row in enumerate(town["tiles"]):
+        for tx, t in enumerate(row):
+            paste(full, tile_ims[t], tx * T, ty * T)
+    sprites = [(b["y"], b["x"], buildings[b["sprite"].split("/")[1]]) for b in town["buildings"]]
+    sprites += [(p["y"], p["x"], props[p["sprite"].split("/")[1]]) for p in town["props"]]
+    sprites.append((town["spawn"]["y"] + 1, town["spawn"]["x"], cat.crop((0, 0, 32, 32))))
+    for y, x, im in sorted(sprites, key=lambda s: s[0]):
+        ox, oy = x - im.width // 2, y - im.height
+        if 0 <= ox and 0 <= oy and ox + im.width <= full.width and oy + im.height <= full.height:
+            paste(full, im, ox, oy)
+    m = TOWN_M * T - 3 * T
+    town_im = full.crop((m, m, full.width - m, full.height - m))
+    W, H = town_im.size
 
     rows = []
-    for n, npc in zip(interiors, ("baker", "pharmacist", "cashier", "banker")):
+    for n in interiors:
         bg, fg = interiors[n]
+        meta = manifest[f"interiors/{n}_bg.png"]
         room = bg.copy()
-        paste(room, npcs[npc], 104, 76 - 31)
+        paste(room, npcs[meta["npc"]], meta["npcFeet"]["x"] - 16, meta["npcFeet"]["y"] - 31)
         room.alpha_composite(fg)
-        paste(room, cat.crop((4 * 32, 0, 5 * 32, 32)), 104, 118 - 31)
+        for name, spot in zip(meta["items"], meta["itemSpots"]):
+            paste(room, ICONS[name], spot["x"] - 8, spot["y"] - 16)
+        paste(room, cat.crop((4 * 32, 0, 5 * 32, 32)), meta["talkSpot"]["x"] - 16, meta["talkSpot"]["y"] - 30)
         rows.append(room)
-    strip = new(W, 40, "#3a3350")
+    strip = new(max(W, IW * 2), 48, "#3a3350")
     x = 4
-    for im in list(ICONS.values()) + list(UI.values()):
-        paste(strip, im, x, 12)
+    for im in ICONS.values():
+        paste(strip, im, x, 4)
         x += im.width + 4
-    sheet = new(max(W, IW * 2), H + 40 + IH * 2, "#3a3350")
-    paste(sheet, town, 0, 0)
+    x = 4
+    for im in UI.values():
+        paste(strip, im, x, 28)
+        x += im.width + 4
+    sheet = new(max(W, IW * 2), H + 48 + IH * 2, "#3a3350")
+    paste(sheet, town_im, 0, 0)
     paste(sheet, strip, 0, H)
     for i, room in enumerate(rows):
-        paste(sheet, room, (i % 2) * IW, H + 40 + (i // 2) * IH)
+        paste(sheet, room, (i % 2) * IW, H + 48 + (i // 2) * IH)
     sheet = sheet.resize((sheet.width * 2, sheet.height * 2), Image.NEAREST)
     sheet.save(os.path.join(OUT, "_preview.png"))
 
@@ -1050,7 +1449,8 @@ if __name__ == "__main__":
     npcs = build_npcs()
     buildings = build_buildings()
     interiors = build_interiors()
-    preview(cat, tiles, props, npcs, buildings, interiors)
+    town = build_town()
+    preview(cat, tiles, props, npcs, buildings, interiors, town)
     with open(os.path.join(OUT, "manifest.json"), "w") as f:
         json.dump(manifest, f, indent=1)
     print(f"wrote {len(manifest)} assets to public/game/")
