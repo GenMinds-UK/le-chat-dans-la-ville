@@ -192,3 +192,9 @@ export const useGameStore = create<GameState>()((set, get) => ({
       return { transcript: next };
     }),
 }));
+
+// Development only: lets automated playtests read and drive the store from the
+// browser console. Never present in a production build.
+if (process.env.NODE_ENV !== "production" && typeof window !== "undefined") {
+  (window as unknown as { __gameStore?: typeof useGameStore }).__gameStore = useGameStore;
+}
