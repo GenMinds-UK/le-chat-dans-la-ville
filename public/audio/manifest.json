@@ -1,4 +1,39 @@
 {
+  "de/a_kilo_of": {
+    "text": "ein Kilo.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
+  "de/also": {
+    "text": "auch.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
+  "de/apple": {
+    "text": "der Apfel.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
+  "de/at_five": {
+    "text": "um fünf Uhr.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
+  "de/bag": {
+    "text": "die Tüte.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
+  "de/bank_card": {
+    "text": "die Bankkarte.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
+  "de/banknote": {
+    "text": "der Geldschein.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
   "de/biscuit": {
     "text": "der Keks.",
     "voice": "voice_481",
@@ -19,13 +54,83 @@
     "voice": "voice_481",
     "model": "voxtral-mini-tts-3"
   },
+  "de/cash_machine": {
+    "text": "der Geldautomat.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
+  "de/change_money": {
+    "text": "Geld wechseln.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
+  "de/cheese": {
+    "text": "der Käse.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
+  "de/coin": {
+    "text": "die Münze.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
+  "de/cough_syrup": {
+    "text": "der Hustensaft.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
+  "de/cream": {
+    "text": "die Creme.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
   "de/croissant": {
     "text": "das Croissant.",
     "voice": "voice_481",
     "model": "voxtral-mini-tts-3"
   },
+  "de/do_you_have": {
+    "text": "haben Sie.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
+  "de/dollar": {
+    "text": "der Dollar.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
+  "de/eggs": {
+    "text": "die Eier.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
+  "de/euro": {
+    "text": "der Euro.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
+  "de/excuse_me": {
+    "text": "Entschuldigung.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
+  "de/fever": {
+    "text": "das Fieber.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
+  "de/form": {
+    "text": "das Formular.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
   "de/goodbye": {
     "text": "Auf Wiedersehen.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
+  "de/headache": {
+    "text": "Ich habe Kopfschmerzen.",
     "voice": "voice_481",
     "model": "voxtral-mini-tts-3"
   },
@@ -39,8 +144,18 @@
     "voice": "voice_481",
     "model": "voxtral-mini-tts-3"
   },
+  "de/hundred": {
+    "text": "hundert.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
   "de/i_would_like": {
     "text": "ich möchte.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
+  "de/milk": {
+    "text": "die Milch.",
     "voice": "voice_481",
     "model": "voxtral-mini-tts-3"
   },
@@ -49,8 +164,43 @@
     "voice": "voice_481",
     "model": "voxtral-mini-tts-3"
   },
+  "de/next_to": {
+    "text": "neben.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
+  "de/nice_day": {
+    "text": "Schönen Tag noch!",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
+  "de/no": {
+    "text": "nein.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
+  "de/plaster": {
+    "text": "das Pflaster.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
   "de/please": {
     "text": "bitte.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
+  "de/safe": {
+    "text": "der Tresor.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
+  "de/six": {
+    "text": "sechs.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
+  "de/tablets": {
+    "text": "die Tabletten.",
     "voice": "voice_481",
     "model": "voxtral-mini-tts-3"
   },
@@ -59,9 +209,84 @@
     "voice": "voice_481",
     "model": "voxtral-mini-tts-3"
   },
+  "de/thats_all": {
+    "text": "Das ist alles.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
+  "de/thermometer": {
+    "text": "das Thermometer.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
+  "de/tomato": {
+    "text": "die Tomate.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
+  "de/toothbrush": {
+    "text": "die Zahnbürste.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
   "de/two": {
     "text": "zwei.",
     "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
+  "de/water": {
+    "text": "das Wasser.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
+  "de/what_time_close": {
+    "text": "Wann schließen Sie?",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
+  "de/where_is": {
+    "text": "wo ist.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
+  "de/yes": {
+    "text": "ja.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
+  "es/a_kilo_of": {
+    "text": "un kilo de.",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
+  "es/also": {
+    "text": "también.",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
+  "es/apple": {
+    "text": "la manzana.",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
+  "es/at_five": {
+    "text": "a las cinco.",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
+  "es/bag": {
+    "text": "la bolsa.",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
+  "es/bank_card": {
+    "text": "la tarjeta bancaria.",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
+  "es/banknote": {
+    "text": "el billete.",
+    "voice": "voice_483",
     "model": "voxtral-mini-tts-3"
   },
   "es/biscuit": {
@@ -84,13 +309,83 @@
     "voice": "voice_483",
     "model": "voxtral-mini-tts-3"
   },
+  "es/cash_machine": {
+    "text": "el cajero automático.",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
+  "es/change_money": {
+    "text": "cambiar dinero.",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
+  "es/cheese": {
+    "text": "el queso.",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
+  "es/coin": {
+    "text": "la moneda.",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
+  "es/cough_syrup": {
+    "text": "el jarabe.",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
+  "es/cream": {
+    "text": "la crema.",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
   "es/croissant": {
     "text": "el cruasán.",
     "voice": "voice_483",
     "model": "voxtral-mini-tts-3"
   },
+  "es/do_you_have": {
+    "text": "tiene.",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
+  "es/dollar": {
+    "text": "el dólar.",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
+  "es/eggs": {
+    "text": "los huevos.",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
+  "es/euro": {
+    "text": "el euro.",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
+  "es/excuse_me": {
+    "text": "perdone.",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
+  "es/fever": {
+    "text": "la fiebre.",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
+  "es/form": {
+    "text": "el formulario.",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
   "es/goodbye": {
     "text": "adiós.",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
+  "es/headache": {
+    "text": "Me duele la cabeza.",
     "voice": "voice_483",
     "model": "voxtral-mini-tts-3"
   },
@@ -104,8 +399,18 @@
     "voice": "voice_483",
     "model": "voxtral-mini-tts-3"
   },
+  "es/hundred": {
+    "text": "cien.",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
   "es/i_would_like": {
     "text": "quisiera.",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
+  "es/milk": {
+    "text": "la leche.",
     "voice": "voice_483",
     "model": "voxtral-mini-tts-3"
   },
@@ -114,8 +419,43 @@
     "voice": "voice_483",
     "model": "voxtral-mini-tts-3"
   },
+  "es/next_to": {
+    "text": "al lado de.",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
+  "es/nice_day": {
+    "text": "¡Que tenga un buen día!",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
+  "es/no": {
+    "text": "no.",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
+  "es/plaster": {
+    "text": "la tirita.",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
   "es/please": {
     "text": "por favor.",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
+  "es/safe": {
+    "text": "la caja fuerte.",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
+  "es/six": {
+    "text": "seis.",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
+  "es/tablets": {
+    "text": "las pastillas.",
     "voice": "voice_483",
     "model": "voxtral-mini-tts-3"
   },
@@ -124,9 +464,84 @@
     "voice": "voice_483",
     "model": "voxtral-mini-tts-3"
   },
+  "es/thats_all": {
+    "text": "Eso es todo.",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
+  "es/thermometer": {
+    "text": "el termómetro.",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
+  "es/tomato": {
+    "text": "el tomate.",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
+  "es/toothbrush": {
+    "text": "el cepillo de dientes.",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
   "es/two": {
     "text": "dos.",
     "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
+  "es/water": {
+    "text": "el agua.",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
+  "es/what_time_close": {
+    "text": "¿A qué hora cierran?",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
+  "es/where_is": {
+    "text": "dónde está.",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
+  "es/yes": {
+    "text": "sí.",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
+  "fr/a_kilo_of": {
+    "text": "un kilo de.",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
+  "fr/also": {
+    "text": "aussi.",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
+  "fr/apple": {
+    "text": "la pomme.",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
+  "fr/at_five": {
+    "text": "à cinq heures.",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
+  "fr/bag": {
+    "text": "le sac.",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
+  "fr/bank_card": {
+    "text": "la carte bancaire.",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
+  "fr/banknote": {
+    "text": "le billet.",
+    "voice": "fr_marie_neutral",
     "model": "voxtral-mini-tts-3"
   },
   "fr/biscuit": {
@@ -149,13 +564,83 @@
     "voice": "fr_marie_neutral",
     "model": "voxtral-mini-tts-3"
   },
+  "fr/cash_machine": {
+    "text": "le distributeur.",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
+  "fr/change_money": {
+    "text": "changer de l'argent.",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
+  "fr/cheese": {
+    "text": "le fromage.",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
+  "fr/coin": {
+    "text": "la pièce.",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
+  "fr/cough_syrup": {
+    "text": "le sirop.",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
+  "fr/cream": {
+    "text": "la crème.",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
   "fr/croissant": {
     "text": "le croissant.",
     "voice": "fr_marie_neutral",
     "model": "voxtral-mini-tts-3"
   },
+  "fr/do_you_have": {
+    "text": "avez-vous.",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
+  "fr/dollar": {
+    "text": "le dollar.",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
+  "fr/eggs": {
+    "text": "les œufs.",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
+  "fr/euro": {
+    "text": "l'euro.",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
+  "fr/excuse_me": {
+    "text": "excusez-moi.",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
+  "fr/fever": {
+    "text": "la fièvre.",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
+  "fr/form": {
+    "text": "le formulaire.",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
   "fr/goodbye": {
     "text": "au revoir.",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
+  "fr/headache": {
+    "text": "J'ai mal à la tête.",
     "voice": "fr_marie_neutral",
     "model": "voxtral-mini-tts-3"
   },
@@ -169,8 +654,18 @@
     "voice": "fr_marie_neutral",
     "model": "voxtral-mini-tts-3"
   },
+  "fr/hundred": {
+    "text": "cent.",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
   "fr/i_would_like": {
     "text": "je voudrais.",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
+  "fr/milk": {
+    "text": "le lait.",
     "voice": "fr_marie_neutral",
     "model": "voxtral-mini-tts-3"
   },
@@ -179,8 +674,43 @@
     "voice": "fr_marie_neutral",
     "model": "voxtral-mini-tts-3"
   },
+  "fr/next_to": {
+    "text": "à côté de.",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
+  "fr/nice_day": {
+    "text": "Bonne journée !",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
+  "fr/no": {
+    "text": "non.",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
+  "fr/plaster": {
+    "text": "le pansement.",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
   "fr/please": {
     "text": "s'il vous plaît.",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
+  "fr/safe": {
+    "text": "le coffre-fort.",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
+  "fr/six": {
+    "text": "six.",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
+  "fr/tablets": {
+    "text": "les comprimés.",
     "voice": "fr_marie_neutral",
     "model": "voxtral-mini-tts-3"
   },
@@ -189,8 +719,48 @@
     "voice": "fr_marie_neutral",
     "model": "voxtral-mini-tts-3"
   },
+  "fr/thats_all": {
+    "text": "C'est tout.",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
+  "fr/thermometer": {
+    "text": "le thermomètre.",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
+  "fr/tomato": {
+    "text": "la tomate.",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
+  "fr/toothbrush": {
+    "text": "la brosse à dents.",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
   "fr/two": {
     "text": "deux.",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
+  "fr/water": {
+    "text": "l'eau.",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
+  "fr/what_time_close": {
+    "text": "À quelle heure fermez-vous ?",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
+  "fr/where_is": {
+    "text": "où est.",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
+  "fr/yes": {
+    "text": "oui.",
     "voice": "fr_marie_neutral",
     "model": "voxtral-mini-tts-3"
   }

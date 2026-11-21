@@ -20,13 +20,12 @@ Code in place: `lib/supabase/client.ts` (`getSupabaseBrowser`), `lib/supabase/se
 (`getSupabaseServer`, `getServerUser`), `lib/supabase/auth.ts` (`signUp`, `signIn`,
 `signOut`, `watchAuthUser`), `proxy.ts` (session refresh), and
 `components/auth/AuthForm.tsx` (takes `onSignedIn`; pass the store's `setUser`).
-Not yet done: mounting the form on the page, progress sync, protecting the voice route,
-and the Supabase variables on Vercel.
-
-`MISTRAL_API_KEY` is deliberately **not** set on Vercel yet. The voice route still
-accepts raw config from the browser with no sign-in, so with the key set anyone who
-finds the URL could spend it. Set it only once the route requires a signed-in user
-and has the rate limit below.
+Also in place: the form is mounted on the page via `AuthGate`,
+`lib/supabase/progress.ts` (`useProgressSync`, store <-> database), and
+`lib/supabase/voiceGuard.ts` (sign-in check, hourly cap and session records for
+`/api/voice-session` and `/api/voice-session/judge`).
+Not yet done: the Supabase variables and `MISTRAL_API_KEY` on Vercel. Both voice
+routes now require a signed-in user, so the key can be set once the user agrees.
 
 ## Ask before acting
 

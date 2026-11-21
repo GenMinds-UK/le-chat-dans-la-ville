@@ -19,15 +19,14 @@ The game is being built to [GAME_PLAN.md](./GAME_PLAN.md).
 |---|---|
 | Content: four shops in three languages | Done |
 | Game store and content contracts | Done |
-| Accounts (Supabase email and password) and progress sync | Done; sync not yet tested end to end |
-| HUD and app shell (title, language picker, quest card, item pop-up, conversation HUD, vocab book) | Built; not yet checked in a browser |
-| Phaser game (town, shop interiors, new item art) | In progress |
-| Voice layer (NPC prompts, objective tool, session hook, pronunciation clips) | In progress |
-| Voice route protection (sign-in required, hourly cap) | Not started |
-| Full playthrough in each language | Not started |
-
-`MISTRAL_API_KEY` is deliberately not set on Vercel until the voice route requires
-a signed-in user, so conversations do not work on the production URL yet.
+| Accounts (Supabase email and password) and progress sync | Done |
+| HUD and app shell (title, language picker, quest card, item pop-up, conversation HUD, vocab book) | Done |
+| Phaser game (town, shop interiors, item art) | Done |
+| Voice layer (NPC prompts, objective tool and judge, session hook) | Done |
+| Pronunciation clips (51 per language) | Done |
+| Voice route protection (sign-in required, 20 conversations per user per hour) | Done; signed-out requests verified, the signed-in cap not yet exercised |
+| QA pass from the `playtest` skill, in each language | Not done |
+| Mistral key and Supabase variables on Vercel | Not set: conversations do not work on the production URL until they are |
 
 ## Run it
 
@@ -67,8 +66,8 @@ components/hud/         React overlays on top of the canvas
 components/auth/        sign-in and sign-up form
 lib/state/gameStore.ts  zustand store; the only thing Phaser and React share
 lib/voice/              NPC prompt builder, objective tool, useVoiceSession hook
-lib/supabase/           browser and server clients, auth helpers, progress sync
-app/api/voice-session/  creates and closes Mistral voice sessions
+lib/supabase/           browser and server clients, auth helpers, progress sync, voice route guard
+app/api/voice-session/  creates and closes Mistral voice sessions; judge/ double-checks objectives
 content/                venues: venues.ts is language-neutral, <lang>/<venue>.ts holds the strings
 public/game/            generated art; manifest.json lists every file
 public/audio/           pre-generated pronunciation clips, <lang>/<id>.mp3
