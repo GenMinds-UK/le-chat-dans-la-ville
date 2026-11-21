@@ -24,9 +24,10 @@ The game is being built to [GAME_PLAN.md](./GAME_PLAN.md).
 | Phaser game (town, shop interiors, item art) | Done |
 | Voice layer (NPC prompts, objective tool and judge, session hook) | Done |
 | Pronunciation clips (51 per language) | Done |
-| Voice route protection (sign-in required, 20 conversations per user per hour) | Done; signed-out requests verified, the signed-in cap not yet exercised |
-| QA pass from the `playtest` skill, in each language | Not done |
-| Mistral key and Supabase variables on Vercel | Not set: conversations do not work on the production URL until they are |
+| Voice route protection (sign-in required, 20 conversations per user per hour) | Done; verified on production |
+| Production deploy with Mistral and Supabase variables | Live |
+| QA: build, key absent from client bundle, route auth and cap, session records, progress across sign-ins, row-level security | Passed on production (2026-11-21) |
+| QA by hand: spoken playthrough of every shop in each language, mic-denied path, phone-width layout | Owner reports the game running and working; not independently re-checked |
 
 ## Run it
 
