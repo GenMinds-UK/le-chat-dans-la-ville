@@ -12,9 +12,10 @@ PNGs by hand: change the script and re-run it.
 python scripts/gen_assets.py     # needs Python 3 with Pillow
 ```
 
-It rewrites every PNG, `public/game/manifest.json` (size and metadata per file) and
-`public/game/_preview.png` (a mock town plus all four interiors). Always open the
-preview after a run to check the result by eye.
+It rewrites every PNG, `public/game/manifest.json` (size and metadata per file),
+`public/game/town.json` (the town map, see below) and `public/game/_preview.png`
+(the real town, every icon, and all four interiors with their items in place).
+Always open the preview after a run to check the result by eye.
 
 ## Conventions
 
@@ -30,14 +31,15 @@ preview after a run to check the result by eye.
 | `player/cat.png` | 8 columns x 2 rows of 32x32. Columns: down, down_left, left, up_left, up, up_right, right, down_right. Row 0 idle, row 1 hop (1px up) — alternate the two while moving. |
 | `player/shadow.png` | 16x6, draw under characters. |
 | `tiles/town_tiles.png` | 16px strip: grass, grass_tuft, flowers, path, cobble, water_0, water_1. |
-| `props/*.png` | tree 32x40, bush 16x16, lamp 16x32, bench 32x16, signpost 16x24, fence 16x16 (tiles sideways), fountain 48x40. |
-| `buildings/{bakery,pharmacy,supermarket,bank}.png` | 96x80. Manifest `door` gives the door's bottom-centre in image pixels. |
+| `props/*.png` | tree 32x40, bush 16x16, lamp 16x32, bench 32x16, signpost 16x24, fence 16x16 (tiles sideways), fountain 48x40. Manifest `solid` is the part that blocks the player, in image pixels. |
+| `buildings/{bakery,pharmacy,supermarket,bank}.png` | 96x80. Manifest `door` gives the door's bottom-centre in image pixels, `solid` the blocking rectangle (the whole image). |
 | `buildings/house_{red,blue}.png` | 64x64, decoration only. |
-| `interiors/<venue>_bg.png` | 240x160 room. Manifest gives `npcFeet`, `talkSpot`, `entry`, and the `exit` mat rectangle. **To do:** add `itemSpots` (6 positions, each reachable from the floor) and stop painting the interactive objects into this image — see below. |
+| `interiors/<venue>_bg.png` | 240x160 room: walls, floor, decorative wall shelves, six empty display stands, plants, exit mat. Manifest fields are listed under "Interiors" below. |
 | `interiors/<venue>_fg.png` | Same size, counter only. Draw it above the NPC and below the player. |
 | `npcs/{baker,pharmacist,cashier,banker}.png` | 32x32, front-facing. `_portrait.png` is 24x24 for the dialogue box. |
-| `items/*.png` | 16x16 object icons: bread, croissant, cupcake, pills, syrup, bandage, apple, milk, cheese, coin, banknote, card, plus cart and cross (shop signs). Three per shop exist; each shop needs six. |
-| `ui/*.png` | panel (24x24, 9-slice 8px), button and button_pressed (24x16, 9-slice 6px), star, lock, mic, exclaim, arrow (16x16), check_off and check_on (12x12). |
+| `items/*.png` | 16x16 object icons, six per shop. Bakery: bread, croissant, cupcake, cake, roll, biscuit. Pharmacy: pills, syrup, bandage, thermometer, cream, toothbrush. Supermarket: apple, milk, cheese, eggs, tomato, water. Bank: coin, banknote, card, atm, safe, form. Plus cart and cross (shop signs, not items). |
+| `ui/*.png` | panel (24x24, 9-slice 8px), button and button_pressed (24x16, 9-slice 6px), star, lock, mic, exclaim, arrow, key_e (keycap prompt), tap (touch prompt) (16x16), check_off and check_on (12x12), corner (5x5 top-left highlight bracket; flip it for the other three). |
+| `town.json` | The town map. Not an image, so it is not in the manifest. See "Town" below. |
 
 The source cat art is `public/sprites/cat/` (418px, from the user); the script
 downsamples it to true 32x32 pixel art.
@@ -50,13 +52,54 @@ highlight the one in reach and so one icon set serves all three languages (icons
 carry no text).
 
 - The icon file name is the item's `icon` in `content/venues.ts`; agree names with
-  content-designer before drawing.
+  content-designer before drawing. `SHOP_ITEMS` in the script holds the same six
+  names per shop, in stand order.
 - Each interior's manifest entry lists six `itemSpots` (`{x, y}`, the icon's
   bottom-centre). The scene draws `venue.items[i]` at `itemSpots[i]`.
-- Put spots on shelves, tables or stands the cat can stand next to. Nothing
-  interactive behind the counter, where the player cannot reach.
-- Decorative shelf filler in `_bg` is fine as long as it does not look like one of
-  the six interactive objects.
+- Spots are on the display stands (`STANDS` in the script), which the cat can
+  stand next to. Nothing interactive behind the counter, where the player cannot
+  reach.
+- The wall shelves in `_bg` hold generic filler (boxes, jars, sacks, books) that
+  must not look like one of the six interactive objects.
+
+## Interiors
+
+Manifest entry of `interiors/<venue>_bg.png` (all in image pixels; the room is drawn
+at 0,0 so they are also world pixels):
+
+| Field | Shape | Meaning |
+|---|---|---|
+| `npcFeet` | `{x, y}` | where the shopkeeper stands, behind the counter |
+| `talkSpot` | `{x, y}` | where the cat steps to when the conversation starts |
+| `entry` | `{x, y}` | where the cat appears on entering |
+| `exit` | `{x, y, w, h}` | the exit mat |
+| `floor` | `{x, y, w, h}` | the area the cat's feet may be in |
+| `solids` | `{x, y, w, h}[]` | walls, counter (with the staff strip behind it), stands, plants |
+| `itemSpots` | `{x, y}[6]` | bottom-centre of each item icon |
+| `items` | `string[6]` | the shop's icon names in stand order (used when a venue has no content yet) |
+| `npc` | `string` | the shopkeeper's sprite name, e.g. `baker` |
+
+The game's collision box for the cat is 10 wide and 5 high around its feet point
+(`FEET` in `game/world.ts`). After changing a room, every item, the talk spot and
+the mat must still be reachable from `entry`.
+
+## Town
+
+`town.json` is generated by `build_town()` so the preview shows the real map:
+
+```
+{ tile: 16, cols, rows, tiles: number[][],   // indices into tileNames / town_tiles.png
+  tileNames: string[],
+  play: {x, y, w, h},                         // where the cat may walk
+  spawn: {x, y},
+  solids: {x, y, w, h}[],                     // extra blockers that are not sprites (the pond)
+  buildings: [{ sprite: "buildings/bakery", venue: "bakery" | null, x, y }],
+  props: [{ sprite: "props/tree", x, y }] }   // x, y = bottom-centre, world pixels
+```
+
+The playable town is 30x22 tiles with 10 tiles of forest round it; all
+coordinates in the file are in whole-map pixels. A sprite's blocker is its
+manifest `solid` placed at its position; a venue's door is its manifest `door`.
 
 ## Adding art
 
@@ -66,6 +109,7 @@ carry no text).
   the script prints `WARN` if not.
 - **New NPC:** add an entry to `NPCS`: palette, `pre` rows (ears, drawn under the
   head), `post` rows (hats, drawn over it), and a 6-row x 8-column `body` pattern.
-- **New venue:** add a spec to both `build_buildings` and `build_interiors` with
-  six item icons and six `itemSpots`.
+- **New venue:** add a spec to both `build_buildings` and `build_interiors`, its six
+  icon names to `SHOP_ITEMS`, its shopkeeper to `SHOP_NPC`, and place the building
+  in `build_town`.
 - Every shop item in `content/venues.ts` needs an icon; phrases do not.

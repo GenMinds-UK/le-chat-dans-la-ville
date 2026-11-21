@@ -53,7 +53,7 @@ Go through every CUSTOMER line, one by one, and decide which of these objectives
 Rules:
 - Only CUSTOMER lines count. Never credit something only the SHOPKEEPER said. What the shopkeeper says never cancels what the customer said.
 - Be generous with a beginner. Judge the meaning, not the form: wrong grammar, wrong gender, wrong word order, missing words, a missing "please", an informal word (any greeting counts as a greeting, any way of saying goodbye counts as goodbye) and recognition or spelling mistakes do not matter when you can tell what the customer meant.
-- The customer has to say it in ${language}. Something said in English does not count.
+- The customer has to say it in ${language}. First check the language of each CUSTOMER line: ignore completely a line that is in English or another language, even if its meaning would achieve an objective.
 - A bare "yes" or "no" achieves an objective only if the objective is to answer a question and the shopkeeper asked that question. It never achieves an objective that requires the customer to ask for something or ask a question.
 - If the objective names a quantity ("two loaves"), the customer has to ask for that quantity.
 - If the objective has two parts ("say thank you and goodbye"), both are needed, in one line or in consecutive customer lines.

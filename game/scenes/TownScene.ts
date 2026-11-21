@@ -10,7 +10,7 @@ import {
   inDoorZone,
   outsideDoor,
   townSolids,
-  zoomFor,
+  townZoomFor,
   type Manifest,
   type TownData,
 } from "../layout";
@@ -229,7 +229,7 @@ export class TownScene extends Phaser.Scene {
   private layout(): void {
     const { width, height } = this.scale;
     const cam = this.cameras.main;
-    const zoom = zoomFor(width, height);
+    const zoom = townZoomFor(width, height);
     cam.setSize(width, height);
     cam.setZoom(zoom);
     // Keep the view inside the map; if the view is larger, centre the map in it.

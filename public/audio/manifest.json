@@ -1,0 +1,197 @@
+{
+  "de/biscuit": {
+    "text": "der Keks.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
+  "de/bread": {
+    "text": "das Brot.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
+  "de/bread_roll": {
+    "text": "das Brötchen.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
+  "de/cake": {
+    "text": "der Kuchen.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
+  "de/croissant": {
+    "text": "das Croissant.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
+  "de/goodbye": {
+    "text": "Auf Wiedersehen.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
+  "de/hello": {
+    "text": "Guten Tag.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
+  "de/how_much": {
+    "text": "Was kostet das?",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
+  "de/i_would_like": {
+    "text": "ich möchte.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
+  "de/muffin": {
+    "text": "der Muffin.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
+  "de/please": {
+    "text": "bitte.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
+  "de/thank_you": {
+    "text": "danke.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
+  "de/two": {
+    "text": "zwei.",
+    "voice": "voice_481",
+    "model": "voxtral-mini-tts-3"
+  },
+  "es/biscuit": {
+    "text": "la galleta.",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
+  "es/bread": {
+    "text": "la barra de pan.",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
+  "es/bread_roll": {
+    "text": "el panecillo.",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
+  "es/cake": {
+    "text": "la tarta.",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
+  "es/croissant": {
+    "text": "el cruasán.",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
+  "es/goodbye": {
+    "text": "adiós.",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
+  "es/hello": {
+    "text": "hola.",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
+  "es/how_much": {
+    "text": "¿Cuánto es?",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
+  "es/i_would_like": {
+    "text": "quisiera.",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
+  "es/muffin": {
+    "text": "la magdalena.",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
+  "es/please": {
+    "text": "por favor.",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
+  "es/thank_you": {
+    "text": "gracias.",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
+  "es/two": {
+    "text": "dos.",
+    "voice": "voice_483",
+    "model": "voxtral-mini-tts-3"
+  },
+  "fr/biscuit": {
+    "text": "le biscuit.",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
+  "fr/bread": {
+    "text": "la baguette.",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
+  "fr/bread_roll": {
+    "text": "le petit pain.",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
+  "fr/cake": {
+    "text": "le gâteau.",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
+  "fr/croissant": {
+    "text": "le croissant.",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
+  "fr/goodbye": {
+    "text": "au revoir.",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
+  "fr/hello": {
+    "text": "bonjour.",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
+  "fr/how_much": {
+    "text": "C'est combien ?",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
+  "fr/i_would_like": {
+    "text": "je voudrais.",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
+  "fr/muffin": {
+    "text": "le muffin.",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
+  "fr/please": {
+    "text": "s'il vous plaît.",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
+  "fr/thank_you": {
+    "text": "merci.",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  },
+  "fr/two": {
+    "text": "deux.",
+    "voice": "fr_marie_neutral",
+    "model": "voxtral-mini-tts-3"
+  }
+}

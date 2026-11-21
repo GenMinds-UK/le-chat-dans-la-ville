@@ -159,3 +159,8 @@ export const VIEW = { w: 240, h: 160 };
 /** Largest whole-number zoom at which a VIEW-sized room still fits. */
 export const zoomFor = (width: number, height: number): number =>
   Math.max(1, Math.floor(Math.min(width / VIEW.w, height / VIEW.h)));
+
+/** The town shows a little more of the map, so it is easier to find the way. */
+const TOWN_VIEW = { w: 320, h: 200 };
+export const townZoomFor = (width: number, height: number): number =>
+  Math.max(1, Math.floor(Math.min(width / TOWN_VIEW.w, height / TOWN_VIEW.h)));

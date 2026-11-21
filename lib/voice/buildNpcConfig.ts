@@ -1,13 +1,17 @@
 import type { AudioSessionCreateRequest } from "@mistralai/mistralai/models/components";
 import type { Lang, Venue } from "../../content/types";
 import { buildInstructions } from "./npcPrompt";
-import { OBJECTIVE_TOOL_TIMEOUT_MS, objectiveToolDeclaration } from "./objectives";
+import { NPC_CAN_HANG_UP, OBJECTIVE_TOOL_TIMEOUT_MS, objectiveToolDeclaration } from "./objectives";
 import { TTS_MODEL, resolveNpcVoice } from "./voices";
 
 // Server only: called by app/api/voice-session/route.ts. The browser sends
 // { venueId, lang } and never sees or supplies this config.
 
-/** The model that plays the NPC and decides when an objective is met. */
+/**
+ * The model that plays the NPC. Voice agents accept only this one today:
+ * mistral-medium-latest, mistral-large-latest and ministral-14b-latest are
+ * rejected with 422 "LLM model is not supported for voice agents".
+ */
 export const NPC_LLM_MODEL = "mistral-small-latest";
 
 /** Spoken when the player has been silent for a while. */
@@ -46,7 +50,7 @@ export function buildNpcConfig(venue: Venue): AudioSessionCreateRequest {
     },
     tools: [
       { ...objectiveToolDeclaration(venue), timeoutMs: OBJECTIVE_TOOL_TIMEOUT_MS },
-      { type: "hang_up" },
+      ...(NPC_CAN_HANG_UP ? [{ type: "hang_up" as const }] : []),
     ],
   };
 }

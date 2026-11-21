@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "agents:sync": "node scripts/sync-agents.mjs",
-    "gen:audio": "node scripts/gen_audio.mjs",
+    "gen:audio": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/gen_audio.mjs",
     "postinstall": "node scripts/sync-agents.mjs"
   },
   "dependencies": {

@@ -6,6 +6,18 @@ import type { Venue } from "../../content/types";
 
 export const COMPLETE_OBJECTIVE = "complete_objective";
 
+/**
+ * Whether the NPC is given Mistral's built-in `hang_up` tool.
+ *
+ * Off: in text simulations of the prompt, the voice-agent model
+ * (mistral-small-latest) never called hang_up after its goodbye, and once
+ * called it while objectives were still open, which throws away the player's
+ * progress. The hook ends the conversation itself a few seconds after the
+ * NPC's goodbye, so nothing depends on the model hanging up. Turning this on
+ * adds the tool and the matching prompt lines; the hook handles both.
+ */
+export const NPC_CAN_HANG_UP = false;
+
 /** Ask the SDK to fail a tool call the browser has not answered after this long. */
 export const OBJECTIVE_TOOL_TIMEOUT_MS = 8000;
 
@@ -83,8 +95,8 @@ export function objectiveToolResult(
   const language = LANGUAGE_NAME[venue.lang];
   const allDone = remaining.length === 0;
   const next = allDone
-    ? `Every objective is complete. Say one short goodbye sentence in ${language}, then call hang_up. Do not ask anything else.`
-    : `Carry on the conversation in ${language}. Do not mention objectives. Do not call hang_up yet.`;
+    ? `Every objective is complete. Say one short goodbye sentence in ${language}${NPC_CAN_HANG_UP ? ", then call hang_up" : ""}. Do not ask anything else.`
+    : `Carry on the conversation in ${language}. Do not mention objectives. Do not say goodbye yet.`;
   return {
     ok: !problem,
     completed: venue.objectives.filter((o) => done.includes(o.id)).map((o) => o.id),

@@ -1,5 +1,5 @@
 import type { Lang, Objective, Venue } from "../../content/types";
-import { COMPLETE_OBJECTIVE } from "./objectives";
+import { COMPLETE_OBJECTIVE, NPC_CAN_HANG_UP } from "./objectives";
 
 // The NPC's instructions, written in the venue's language (French, Spanish or
 // German). Pure and free of secrets: the server sends them when it creates the
@@ -28,6 +28,42 @@ type Parts = {
   tool: string;
   /** Worked examples of when to call the tool, built from the objectives' hints. */
   examples: string;
+  /** What to do once nothing remains (depends on NPC_CAN_HANG_UP). */
+  ending: string;
+};
+
+const ENDING: Record<Lang, { hangUp: string; noHangUp: string }> = {
+  fr: {
+    hangUp:
+      "dis au revoir en une phrase courte, puis appelle hang_up. Ne pose plus de question. N'appelle jamais hang_up avant.",
+    noHangUp:
+      "dis au revoir en une phrase courte et ne pose plus de question. La conversation se termine ensuite toute seule.",
+  },
+  es: {
+    hangUp:
+      "despídete con una frase corta y después llama a hang_up. No hagas más preguntas. Nunca llames a hang_up antes.",
+    noHangUp:
+      "despídete con una frase corta y no hagas más preguntas. La conversación termina después por sí sola.",
+  },
+  de: {
+    hangUp:
+      "Verabschiede dich mit einem kurzen Satz und rufe dann hang_up auf. Stelle keine Frage mehr. Rufe hang_up nie vorher auf.",
+    noHangUp:
+      "Verabschiede dich mit einem kurzen Satz und stelle keine Frage mehr. Das Gespräch endet danach von selbst.",
+  },
+};
+
+/** Appended when the browser knows more about progress than the NPC reported (see useVoiceSession). */
+const PROGRESS: Record<Lang, (done: string, open: string | null, ending: string) => string> = {
+  fr: (done, open, ending) =>
+    `## État actuel\nObjectifs déjà atteints (ne les signale plus) : ${done}.\n` +
+    (open ? `Objectifs encore ouverts : ${open}.` : `Il ne reste aucun objectif : ${ending}`),
+  es: (done, open, ending) =>
+    `## Estado actual\nObjetivos ya cumplidos (no los vuelvas a señalar): ${done}.\n` +
+    (open ? `Objetivos que siguen abiertos: ${open}.` : `No queda ningún objetivo: ${ending}`),
+  de: (done, open, ending) =>
+    `## Aktueller Stand\nSchon erreichte Ziele (nicht noch einmal melden): ${done}.\n` +
+    (open ? `Noch offene Ziele: ${open}.` : `Es ist kein Ziel mehr offen: ${ending}`),
 };
 
 const TEMPLATES: Record<Lang, (p: Parts) => string> = {
@@ -70,7 +106,7 @@ ${p.objectives}
 2. Pour chaque objectif encore ouvert, demande-toi : « Le client vient-il de le faire dans cette phrase ? »
 3. Si oui pour un ou plusieurs objectifs, appelle d'abord ${p.tool} avec tous leurs identifiants. Fais-le tout de suite, dans ce tour, pas au tour suivant. Jamais deux fois pour le même objectif.
 4. Ensuite seulement, réponds au client.
-5. Si le résultat de l'outil indique qu'il ne reste aucun objectif : dis au revoir en une phrase courte, puis appelle hang_up. Ne pose plus de question. N'appelle jamais hang_up avant.
+5. Si le résultat de l'outil indique qu'il ne reste aucun objectif : ${p.ending}
 
 Exemples :
 ${p.examples}
@@ -117,7 +153,7 @@ ${p.objectives}
 2. Para cada objetivo que sigue abierto, pregúntate: «¿El cliente acaba de hacerlo en esta frase?»
 3. Si es así para uno o varios objetivos, llama primero a ${p.tool} con todos sus identificadores. Hazlo enseguida, en este turno, no en el siguiente. Nunca dos veces para el mismo objetivo.
 4. Solo después, responde al cliente.
-5. Si el resultado de la herramienta indica que no queda ningún objetivo: despídete con una frase corta y después llama a hang_up. No hagas más preguntas. Nunca llames a hang_up antes.
+5. Si el resultado de la herramienta indica que no queda ningún objetivo: ${p.ending}
 
 Ejemplos:
 ${p.examples}
@@ -164,7 +200,7 @@ ${p.objectives}
 2. Frage dich bei jedem noch offenen Ziel: „Hat der Kunde das gerade in diesem Satz getan?“
 3. Wenn ja, bei einem oder mehreren Zielen: Rufe zuerst ${p.tool} mit allen ihren Kennungen auf. Tu es sofort, in dieser Runde, nicht in der nächsten. Nie zweimal für dasselbe Ziel.
 4. Antworte dem Kunden erst danach.
-5. Wenn das Ergebnis des Werkzeugs meldet, dass kein Ziel mehr offen ist: Verabschiede dich mit einem kurzen Satz und rufe dann hang_up auf. Stelle keine Frage mehr. Rufe hang_up nie vorher auf.
+5. Wenn das Ergebnis des Werkzeugs meldet, dass kein Ziel mehr offen ist: ${p.ending}
 
 Beispiele:
 ${p.examples}
@@ -173,7 +209,7 @@ ${p.examples}
 Du hast gerade zum Kunden gesagt: „${p.welcome}“ Wiederhole das nicht. Diese Begrüßung erfüllt kein Ziel. Warte auf seine Antwort.`,
 };
 
-const HINT_TEMPLATES: Record<Lang, (objective: string | null) => string> = {
+const HINT_TEMPLATES: Record<Lang, (objective: string) => string> = {
   fr: (objective) => `## Aide demandée
 Le client vient de demander de l'aide. Pour ta prochaine réponse seulement :
 - redis ta dernière phrase beaucoup plus simplement : une seule phrase très courte, avec les mots les plus faciles ;
@@ -246,29 +282,57 @@ function toolExamples(venue: Venue): string {
 const objectiveLine = (o: Objective) =>
   `- ${o.id} : ${o.text}${o.hint ? ` (the learner's hint: ${o.hint})` : ""}`;
 
-/** The full prompt for a venue. Same output on the server and in the browser. */
-export function buildInstructions(venue: Venue): string {
-  return TEMPLATES[venue.lang]({
-    name: venue.npc.name,
-    shop: venue.name,
-    persona: venue.npc.persona,
-    welcome: venue.welcome,
-    items: venue.items.map((i) => i.term).join(", "),
-    phrases: venue.phrases.map((p) => p.term).join(", "),
-    objectives: venue.objectives.map(objectiveLine).join("\n"),
-    a: venue.items[0]?.term ?? "",
-    b: venue.items[1]?.term ?? "",
-    tool: COMPLETE_OBJECTIVE,
-    examples: toolExamples(venue),
-  });
-}
+export type PromptState = {
+  /**
+   * Objectives the game has ticked. Pass it only when the NPC may not know
+   * (the judge found one the NPC did not report); adds an "État actuel" section.
+   */
+  done?: readonly string[];
+  /** Adds the one-turn "slow down and rephrase" section. */
+  hint?: boolean;
+};
 
 /**
- * The full prompt plus a one-turn "slow down and rephrase" section, aimed at
- * the given open objective. The hook swaps back to buildInstructions() once
- * the NPC has spoken, so the hint never becomes permanent.
+ * The full prompt for a venue. With no state it is the text the server sends
+ * at session creation; the browser calls it with state to build the text for
+ * session.update(). Every call returns the complete prompt, so an update can
+ * never lose the original instructions.
  */
-export function buildHintInstructions(venue: Venue, openObjective: Objective | null): string {
-  const target = openObjective ? `${openObjective.id} : ${openObjective.text}` : null;
-  return `${buildInstructions(venue)}\n\n${HINT_TEMPLATES[venue.lang](target)}`;
+export function buildInstructions(venue: Venue, state: PromptState = {}): string {
+  const ending = ENDING[venue.lang][NPC_CAN_HANG_UP ? "hangUp" : "noHangUp"];
+  const sections = [
+    TEMPLATES[venue.lang]({
+      name: venue.npc.name,
+      shop: venue.name,
+      persona: venue.npc.persona,
+      welcome: venue.welcome,
+      items: venue.items.map((i) => i.term).join(", "),
+      phrases: venue.phrases.map((p) => p.term).join(", "),
+      objectives: venue.objectives.map(objectiveLine).join("\n"),
+      a: venue.items[0]?.term ?? "",
+      b: venue.items[1]?.term ?? "",
+      tool: COMPLETE_OBJECTIVE,
+      examples: toolExamples(venue),
+      ending,
+    }),
+  ];
+
+  const done = venue.objectives.filter((o) => state.done?.includes(o.id));
+  const open = venue.objectives.filter((o) => !state.done?.includes(o.id));
+  if (done.length > 0) {
+    sections.push(
+      PROGRESS[venue.lang](
+        done.map((o) => o.id).join(", "),
+        open.length ? open.map((o) => o.id).join(", ") : null,
+        ending,
+      ),
+    );
+  }
+
+  if (state.hint && open.length > 0) {
+    const next = open[0];
+    sections.push(HINT_TEMPLATES[venue.lang](`${next.id} : ${next.text}`));
+  }
+
+  return sections.join("\n\n");
 }

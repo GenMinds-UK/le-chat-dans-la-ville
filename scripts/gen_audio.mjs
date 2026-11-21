@@ -1,14 +1,20 @@
 // Generates the pronunciation clips (GAME_PLAN.md 3.5): one mp3 per item and
 // phrase, per language that has content, at public/audio/<lang>/<id>.mp3.
 //
-//   npm run gen:audio                 # only the clips that do not exist yet
-//   npm run gen:audio -- --force      # regenerate everything
-//   npm run gen:audio -- --lang=fr    # one language
+//   npm run gen:audio                   # only the clips that are missing or out of date
+//   npm run gen:audio -- --force        # regenerate everything selected
+//   npm run gen:audio -- --lang=fr      # one language
+//   npm run gen:audio -- --venue=bakery # one venue
 //   npm run gen:audio -- --only=bread,croissant
-//   npm run gen:audio -- --dry-run    # list what would be generated, no API calls
+//   npm run gen:audio -- --dry-run      # list what would be generated, no API calls
 //
 // Needs MISTRAL_API_KEY in the environment or in .env.local. Each clip is one
 // billable text-to-speech call.
+//
+// public/audio/manifest.json records the text, voice and model each clip was
+// made from. An existing clip is kept only while those still match, so a term
+// reworded in content/ or a changed voice is regenerated on the next run
+// without --force. Commit the manifest with the clips.
 //
 // content/ and lib/voice/voices.ts are TypeScript with extensionless imports.
 // They are loaded directly: Node strips the types itself (22.18+), and the
@@ -61,6 +67,7 @@ const option = (name) => {
 const force = flag("force");
 const dryRun = flag("dry-run");
 const onlyLang = option("lang");
+const onlyVenue = option("venue");
 const onlyIds = option("only")?.split(",").map((s) => s.trim()).filter(Boolean) ?? null;
 
 function readKey() {
@@ -87,6 +94,7 @@ for (const { code: lang } of LANGS) {
   if (onlyLang && onlyLang !== lang) continue;
   const seen = new Map();
   for (const venue of getVenues(lang)) {
+    if (onlyVenue && onlyVenue !== venue.id) continue;
     for (const entry of [...venue.items, ...venue.phrases]) {
       if (onlyIds && !onlyIds.includes(entry.id)) continue;
       const earlier = seen.get(entry.id);
@@ -97,7 +105,14 @@ for (const { code: lang } of LANGS) {
         continue;
       }
       seen.set(entry.id, entry.term);
-      jobs.push({ lang, id: entry.id, term: entry.term, file: path.join(OUT_DIR, lang, `${entry.id}.mp3`) });
+      jobs.push({
+        lang,
+        id: entry.id,
+        key: `${lang}/${entry.id}`,
+        term: entry.term,
+        made: { text: spoken(entry.term), voice: ITEM_VOICE[lang], model: TTS_MODEL },
+        file: path.join(OUT_DIR, lang, `${entry.id}.mp3`),
+      });
     }
   }
 }
@@ -107,8 +122,26 @@ if (jobs.length === 0) {
   process.exit(0);
 }
 
-const todo = jobs.filter((j) => force || !existsSync(j.file));
-console.log(`${jobs.length} clips in content, ${jobs.length - todo.length} already exist, ${todo.length} to generate.`);
+const MANIFEST = path.join(OUT_DIR, "manifest.json");
+const manifest = existsSync(MANIFEST) ? JSON.parse(readFileSync(MANIFEST, "utf8")) : {};
+const saveManifest = () => {
+  mkdirSync(OUT_DIR, { recursive: true });
+  const sorted = Object.fromEntries(Object.entries(manifest).sort(([a], [b]) => a.localeCompare(b)));
+  writeFileSync(MANIFEST, `${JSON.stringify(sorted, null, 2)}
+`);
+};
+const upToDate = (j) => {
+  const was = manifest[j.key];
+  return (
+    existsSync(j.file) &&
+    was?.text === j.made.text &&
+    was?.voice === j.made.voice &&
+    was?.model === j.made.model
+  );
+};
+
+const todo = jobs.filter((j) => force || !upToDate(j));
+console.log(`${jobs.length} clips in content, ${jobs.length - todo.length} up to date, ${todo.length} to generate.`);
 if (dryRun) {
   for (const j of todo) console.log(`  ${j.lang}/${j.id}.mp3  "${j.term}"  voice ${ITEM_VOICE[j.lang]}`);
   process.exit(0);
@@ -137,9 +170,9 @@ async function synthesise(job) {
     try {
       // SpeechResponse is { audioData: string } — the audio, base64 encoded.
       const res = await client.audio.speech.complete({
-        model: TTS_MODEL,
-        input: spoken(job.term),
-        voiceId: ITEM_VOICE[job.lang],
+        model: job.made.model,
+        input: job.made.text,
+        voiceId: job.made.voice,
         responseFormat: "mp3",
       });
       const buf = Buffer.from(res.audioData, "base64");
@@ -163,6 +196,8 @@ for (const job of todo) {
     const tmp = `${job.file}.tmp`;
     writeFileSync(tmp, buf);
     renameSync(tmp, job.file);
+    manifest[job.key] = job.made;
+    saveManifest();
     made++;
     console.log(`  ${job.lang}/${job.id}.mp3  ${buf.length} bytes  "${job.term}"`);
   } catch (err) {
