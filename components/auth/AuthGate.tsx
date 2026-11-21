@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, type ReactNode } from "react";
-import { signOut, watchAuthUser, type AuthUser } from "@/lib/supabase/auth";
+import { watchAuthUser, type AuthUser } from "@/lib/supabase/auth";
 import AuthForm from "./AuthForm";
 
 // Shows the sign-in form until there is a signed-in user, then the children.
@@ -34,15 +34,6 @@ export default function AuthGate({
   if (user === undefined) return <p className="auth-notice">Loading…</p>;
   if (!user) return <AuthForm />;
 
-  return (
-    <>
-      <div className="auth-bar">
-        <span>{user.email}</span>
-        <button type="button" className="auth-link" onClick={() => signOut()}>
-          Sign out
-        </button>
-      </div>
-      {children}
-    </>
-  );
+  // Sign-out lives in the game menu and on the title screen (components/hud).
+  return <>{children}</>;
 }

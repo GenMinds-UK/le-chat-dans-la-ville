@@ -1,236 +1,1187 @@
+/*
+  Le chat dans la ville: app shell and HUD styles.
+
+  --px is the HUD's integer scale: one art pixel is --px CSS pixels. Everything
+  drawn from the pixel art (9-slice panels, buttons, icons) is sized in
+  multiples of it, with image-rendering: pixelated, so nothing is smoothed.
+*/
+
 :root {
-  --bg: #0f1115;
-  --panel: #171a21;
-  --text: #e8eaf0;
-  --muted: #9aa3b2;
-  --accent: #ff7000;
+  --ink: #2b2233; /* the art's outline colour */
+  --cream: #fff6dc; /* panel fill */
+  --shade: #e6d3a0; /* panel shadow */
+  --orange: #ff8a1f; /* button fill */
+  --orange-dark: #b84a00; /* orange that is readable on cream */
+  --muted: #6b5f73;
+  --green: #2e8b57;
+  --red: #b3261e;
+  --blue: #2f5d8a;
+  --sky: #2f5d73;
+
+  --px: 3;
+  --fs: 18px;
+  --gap: calc(4px * var(--px));
+  --font: var(--font-pixel), "Courier New", ui-monospace, monospace;
 }
 
-* {
+@media (max-width: 600px), (max-height: 560px) {
+  :root {
+    --px: 2;
+    --fs: 16px;
+  }
+}
+
+*,
+*::before,
+*::after {
   box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
 }
 
 body {
   margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--ink);
+  color: var(--cream);
+  font-family: var(--font);
+  font-size: var(--fs);
+  line-height: 1.3;
+  -webkit-text-size-adjust: 100%;
 }
 
-main {
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 2rem 1rem 4rem;
+button,
+input {
+  font: inherit;
+  color: inherit;
 }
 
-h1 {
-  font-size: 1.5rem;
-  margin-bottom: 0.25rem;
+h1,
+h2,
+h3,
+p,
+ul,
+ol,
+dl,
+dd {
+  margin: 0;
 }
 
-h1 img {
-  width: 28px;
-  height: 28px;
-  vertical-align: -6px;
-  margin-right: 0.5rem;
+ul,
+ol {
+  padding: 0;
+  list-style: none;
 }
 
-.subtitle {
-  color: var(--muted);
-  margin-top: 0;
-  margin-bottom: 1.5rem;
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
-.controls {
-  display: flex;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
+/* ---------- primitives ---------- */
+
+/* 9-slice panel: /game/ui/panel.png is 24x24 with 8px corners. */
+.px-panel,
+.auth-form {
+  border-style: solid;
+  border-color: transparent;
+  border-width: calc(3px * var(--px));
+  border-image: url("/game/ui/panel.png") 8 fill / calc(8px * var(--px)) stretch;
+  image-rendering: pixelated;
+  padding: calc(2px * var(--px)) calc(3px * var(--px));
+  color: var(--ink);
+  pointer-events: auto;
 }
 
-button {
-  background: var(--accent);
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 0.6rem 1.2rem;
-  font-size: 1rem;
-  cursor: pointer;
-}
-
-button.secondary {
-  background: var(--panel);
-  color: var(--text);
-  border: 1px solid #2a2f3a;
-}
-
-button:disabled {
-  opacity: 0.5;
-  cursor: default;
-}
-
-.status-row {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 1rem;
-}
-
-.status-row .status {
-  margin-bottom: 0;
-}
-
-/* Agent avatar: bare pixel-cat mark, no frame/background (brand guidelines) */
-.avatar {
+/* 9-slice button: /game/ui/button.png is 24x16 with 6px corners. */
+.px-btn,
+.auth-form button[type="submit"] {
   display: inline-flex;
-  flex-shrink: 0;
-  width: 44px;
-  height: 44px;
   align-items: center;
   justify-content: center;
+  gap: calc(2px * var(--px));
+  min-height: calc(14px * var(--px));
+  padding: calc(1px * var(--px)) calc(4px * var(--px));
+  border-style: solid;
+  border-color: transparent;
+  border-width: calc(3px * var(--px)) calc(3px * var(--px)) calc(4px * var(--px));
+  border-image: url("/game/ui/button.png") 6 fill / calc(6px * var(--px)) stretch;
+  image-rendering: pixelated;
+  background: none;
+  color: var(--ink);
+  font-weight: 600;
+  line-height: 1.1;
+  text-align: center;
+  cursor: pointer;
+  pointer-events: auto;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.avatar img {
-  width: 40px;
-  height: 40px;
+.px-btn:active:not(:disabled),
+.px-btn[aria-pressed="true"],
+.auth-form button[type="submit"]:active:not(:disabled) {
+  border-image-source: url("/game/ui/button_pressed.png");
+}
+
+.px-btn:disabled,
+.auth-form button[type="submit"]:disabled {
+  cursor: default;
+  opacity: 0.55;
+  filter: grayscale(1);
+}
+
+.px-btn:focus-visible,
+.auth-form button:focus-visible,
+.quest-head:focus-visible,
+.objectives-toggle:focus-visible {
+  outline: calc(1px * var(--px)) solid var(--blue);
+  outline-offset: calc(1px * var(--px));
+}
+
+/* Secondary button: drawn in CSS with the same outline and shadow steps. */
+.px-btn.px-btn-quiet {
+  border: calc(1px * var(--px)) solid var(--ink);
+  border-image: none;
+  background: var(--cream);
+  box-shadow: inset 0 calc(-1px * var(--px)) 0 var(--shade);
+  padding: calc(2px * var(--px)) calc(4px * var(--px)) calc(3px * var(--px));
+}
+
+.px-btn.px-btn-quiet:active:not(:disabled),
+.px-btn.px-btn-quiet[aria-pressed="true"] {
+  background: var(--shade);
+  box-shadow: inset 0 calc(1px * var(--px)) 0 #c9b684;
+}
+
+.px-btn.px-btn-icon {
+  padding: 0 calc(1px * var(--px));
+  flex: none;
+}
+
+/* Pixel art image at a whole-number scale (see PxImg). */
+.px-img {
+  --s: calc(var(--px) * var(--k, 1));
+  display: inline-block;
+  flex: none;
+  width: calc(var(--w) * 1px * var(--s));
+  height: calc(var(--w) * 1px * var(--s));
+  vertical-align: middle;
+}
+
+.px-img img {
   display: block;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
 }
 
-.avatar.live img {
-  filter: drop-shadow(0 0 8px rgba(74, 222, 128, 0.55));
+.speaker-icon {
+  display: block;
+  flex: none;
+  width: calc(16px * (var(--px) - 1));
+  height: calc(16px * (var(--px) - 1));
 }
 
-.avatar.speaking img {
-  animation: avatar-pulse 1s ease-in-out infinite;
+.speaker-btn.is-playing .speaker-icon {
+  animation: px-blink 0.5s steps(2, jump-none) infinite;
 }
 
-@keyframes avatar-pulse {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.12);
-  }
+.speaker-btn.is-missing {
+  opacity: 0.55;
+  filter: grayscale(1);
 }
 
-.status {
+kbd {
+  display: inline-block;
+  padding: 0 0.35em;
+  border: 1px solid currentColor;
+  font: inherit;
+  font-size: 0.9em;
+  line-height: 1.25;
+}
+
+.hud-note {
   color: var(--muted);
-  font-size: 0.9rem;
-  margin-bottom: 1rem;
+  font-size: 0.85em;
 }
 
-.status .live {
-  color: #4ade80;
+@keyframes px-blink {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.35;
+  }
 }
 
-.transcript {
-  background: var(--panel);
-  border: 1px solid #2a2f3a;
-  border-radius: 12px;
-  padding: 1rem;
-  min-height: 200px;
-  max-height: 50vh;
+@keyframes px-hop {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(calc(-1px * var(--px)));
+  }
+}
+
+/* ---------- app shell ---------- */
+
+.app {
+  position: fixed;
+  inset: 0;
+}
+
+.app-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: safe center;
+  gap: calc(6px * var(--px));
+  padding: calc(8px * var(--px)) 16px;
   overflow-y: auto;
-  list-style: none;
-  margin: 0;
-  padding-left: 1rem;
+  background-color: var(--sky);
+  /* big soft checker, in whole pixels */
+  background-image: linear-gradient(45deg, rgb(255 255 255 / 0.04) 25%, transparent 25%, transparent 75%, rgb(255 255 255 / 0.04) 75%),
+    linear-gradient(45deg, rgb(255 255 255 / 0.04) 25%, transparent 25%, transparent 75%, rgb(255 255 255 / 0.04) 75%);
+  background-size: calc(32px * var(--px)) calc(32px * var(--px));
+  background-position: 0 0, calc(16px * var(--px)) calc(16px * var(--px));
 }
 
-.transcript li {
-  margin: 0.4rem 0;
-  line-height: 1.4;
+.app-game .app-body {
+  display: contents;
 }
 
-.transcript .role-user {
-  color: #7cc4ff;
+.title-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(3px * var(--px));
+  text-align: center;
 }
 
-.transcript .role-assistant {
-  color: #ffb27c;
+.title-header h1 {
+  font-size: clamp(34px, 9vw, 68px);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--cream);
+  text-shadow:
+    calc(1px * var(--px)) 0 0 var(--ink),
+    calc(-1px * var(--px)) 0 0 var(--ink),
+    0 calc(-1px * var(--px)) 0 var(--ink),
+    0 calc(1px * var(--px)) 0 var(--ink),
+    calc(1px * var(--px)) calc(3px * var(--px)) 0 var(--ink),
+    calc(-1px * var(--px)) calc(3px * var(--px)) 0 var(--ink);
 }
 
-.transcript .line-avatar {
-  width: 16px;
-  height: 16px;
-  vertical-align: -3px;
-  margin-right: 0.35rem;
+.title-header p {
+  color: var(--cream);
 }
 
-.error {
-  color: #f87171;
-  font-size: 0.9rem;
-  margin-top: 0.75rem;
-  white-space: pre-wrap;
+/* First frame (facing down) of /game/player/cat.png: 8x2 frames of 32x32. */
+.title-cat {
+  width: calc(32px * var(--px) * 2);
+  height: calc(32px * var(--px) * 2);
+  background: url("/game/player/cat.png") 0 0 / calc(256px * var(--px) * 2) calc(64px * var(--px) * 2) no-repeat;
+  image-rendering: pixelated;
+  animation: px-hop 0.6s steps(2, jump-none) infinite alternate;
 }
 
-/* Sign-in form and signed-in bar (components/auth) */
+.app-title .app-body {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--gap);
+}
+
+.title-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--gap);
+  text-align: center;
+}
+
+.title-panel h2 {
+  font-size: 1.15em;
+}
+
+.title-learning strong {
+  color: var(--orange-dark);
+}
+
+.title-play {
+  font-size: 1.4em;
+}
+
+.title-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: calc(2px * var(--px));
+}
+
+/* ---------- language picker ---------- */
+
+.lang-picker {
+  display: flex;
+  flex-direction: column;
+  gap: calc(2px * var(--px));
+}
+
+.lang-option {
+  width: 100%;
+  justify-content: space-between;
+  gap: var(--gap);
+}
+
+.lang-native {
+  font-size: 1.35em;
+  font-weight: 700;
+}
+
+.lang-english {
+  font-weight: 400;
+}
+
+.lang-option.is-current .lang-english::after {
+  content: " (current)";
+}
+
+/* ---------- sign-in form (components/auth, platform's markup) ---------- */
+
 .auth-form {
   display: flex;
   flex-direction: column;
-  gap: 0.9rem;
-  max-width: 360px;
-  background: var(--panel);
-  padding: 1.25rem;
-  border-radius: 12px;
+  gap: calc(3px * var(--px));
 }
 
 .auth-form h2 {
-  margin: 0;
-  font-size: 1.15rem;
+  font-size: 1.25em;
+  text-align: center;
 }
 
 .auth-form label {
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
-  font-size: 0.9rem;
+  gap: calc(1px * var(--px));
+  font-weight: 600;
+}
+
+.auth-form label small {
+  font-weight: 400;
   color: var(--muted);
 }
 
 .auth-form input {
-  background: var(--bg);
-  color: var(--text);
-  border: 1px solid #2a2f3a;
-  border-radius: 8px;
-  padding: 0.6rem 0.7rem;
-  font-size: 1rem;
+  width: 100%;
+  padding: calc(2px * var(--px)) calc(3px * var(--px));
+  border: calc(1px * var(--px)) solid var(--ink);
+  border-radius: 0;
+  background: #fff;
+  color: var(--ink);
+  /* at least 16px so phones do not zoom the page on focus */
+  font-size: max(16px, 1em);
+  font-weight: 400;
+  box-shadow: inset 0 calc(1px * var(--px)) 0 var(--shade);
 }
 
 .auth-form input:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 1px;
+  outline: calc(1px * var(--px)) solid var(--blue);
+  outline-offset: 0;
+}
+
+.auth-form button[type="submit"] {
+  font-size: 1.15em;
 }
 
 .auth-error {
-  color: #ff8a80;
-  margin: 0;
+  color: var(--red);
+  font-weight: 600;
 }
 
 .auth-notice {
   color: var(--muted);
-  margin: 0;
 }
 
 .auth-switch {
-  margin: 0;
-  font-size: 0.9rem;
   color: var(--muted);
+  text-align: center;
 }
 
 button.auth-link {
-  background: none;
-  color: var(--accent);
   padding: 0;
-  font-size: inherit;
+  border: none;
+  background: none;
+  color: var(--orange-dark);
+  font-weight: 600;
   text-decoration: underline;
+  cursor: pointer;
 }
 
-.auth-bar {
+/* AuthGate's bare "Loading…" and configuration-error lines, outside the form */
+.app-body > .auth-notice,
+.app-body > .auth-error {
+  padding: calc(3px * var(--px)) calc(4px * var(--px));
+  border: calc(1px * var(--px)) solid var(--ink);
+  background: var(--cream);
+  text-align: center;
+}
+
+/* ---------- game + HUD overlay ---------- */
+
+.game-root {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--ink);
+}
+
+.game-canvas {
+  position: absolute;
+  inset: 0;
+}
+
+/* The overlay takes no pointer input itself: only panels and buttons do. */
+.hud-root {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  container: hud / size;
+}
+
+.hud-layer {
+  --px: 3;
+  --fs: 18px;
+  --gap: calc(4px * var(--px));
+  position: absolute;
+  inset: 0;
+  padding: calc(4px * var(--px));
+  padding: max(calc(4px * var(--px)), env(safe-area-inset-top)) max(calc(4px * var(--px)), env(safe-area-inset-right))
+    max(calc(4px * var(--px)), env(safe-area-inset-bottom)) max(calc(4px * var(--px)), env(safe-area-inset-left));
+  font-size: var(--fs);
+  pointer-events: none;
+}
+
+@container hud (max-width: 600px) or (max-height: 560px) {
+  .hud-layer {
+    --px: 2;
+    --fs: 16px;
+  }
+}
+
+.hud-top {
   display: flex;
+  align-items: flex-start;
   justify-content: space-between;
+  gap: var(--gap);
+}
+
+.menu-button {
+  flex: none;
+}
+
+/* quest card */
+
+.quest-card {
+  flex: 0 1 400px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: calc(2px * var(--px));
+}
+
+.quest-head {
+  display: flex;
   align-items: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
-  font-size: 0.9rem;
+  gap: calc(3px * var(--px));
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+}
+
+.quest-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 1.15em;
+  font-weight: 700;
+  color: var(--orange-dark);
+}
+
+.quest-stars {
+  display: inline-flex;
+  flex: none;
+  gap: 2px;
+}
+
+.quest-star.is-off {
+  opacity: 0.25;
+  filter: grayscale(1);
+}
+
+.quest-toggle {
+  flex: none;
+  width: 1em;
+  font-weight: 700;
+  text-align: center;
+}
+
+.quest-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: calc(2px * var(--px));
+}
+
+/* shop banner: shows on entering, then fades in three steps */
+
+.venue-banner {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 30%;
+  display: flex;
+  justify-content: center;
+  padding: 0 var(--gap);
+  pointer-events: none;
+  animation: banner 3.2s steps(8, jump-none) forwards;
+}
+
+.venue-banner .px-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: calc(2px * var(--px)) calc(8px * var(--px));
+  pointer-events: none;
+}
+
+.venue-banner-name {
+  font-size: 1.7em;
+  font-weight: 700;
+}
+
+.venue-banner-en {
   color: var(--muted);
+}
+
+@keyframes banner {
+  0%,
+  70% {
+    opacity: 1;
+    visibility: visible;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* one-line controls help */
+
+.controls-help {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(4px * var(--px));
+  bottom: max(calc(4px * var(--px)), env(safe-area-inset-bottom));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2px calc(6px * var(--px));
+  margin: 0 auto;
+  width: fit-content;
+  max-width: calc(100% - 2 * var(--gap));
+  padding: calc(1px * var(--px)) calc(4px * var(--px));
+  background: rgb(43 34 51 / 0.82);
+  color: var(--cream);
+  font-size: 0.85em;
+  pointer-events: none;
+}
+
+.controls-list {
+  display: grid;
+  gap: calc(1px * var(--px));
+}
+
+.controls-list dt {
+  font-weight: 700;
+  color: var(--orange-dark);
+}
+
+.controls-list dd {
+  margin-bottom: calc(2px * var(--px));
+}
+
+/* backdrops and modals */
+
+.hud-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: var(--gap);
+  background: rgb(43 34 51 / 0.62);
+  pointer-events: auto;
+}
+
+.hud-backdrop-clear {
+  background: rgb(43 34 51 / 0.25);
+}
+
+.hud-modal {
+  display: flex;
+  flex-direction: column;
+  gap: calc(3px * var(--px));
+  width: min(440px, 100%);
+  max-height: 100%;
+  min-height: 0;
+}
+
+.hud-modal-wide {
+  width: min(640px, 100%);
+}
+
+.hud-modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap);
+}
+
+.hud-modal h2 {
+  font-size: 1.3em;
+  color: var(--orange-dark);
+}
+
+.hud-modal h3 {
+  font-size: 1em;
+  font-weight: 700;
+}
+
+.hud-modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: calc(3px * var(--px));
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: calc(1px * var(--px));
+}
+
+.menu-list {
+  display: flex;
+  flex-direction: column;
+  gap: calc(2px * var(--px));
+}
+
+.menu-sub {
+  font-weight: 400;
+}
+
+/* item pop-up */
+
+.item-popup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(2px * var(--px));
+  width: min(360px, 100%);
+  max-height: 100%;
+  overflow-y: auto;
+  text-align: center;
+}
+
+.item-icon {
+  padding: calc(2px * var(--px));
+  border: calc(1px * var(--px)) solid var(--ink);
+  background: #fff;
+  box-shadow: inset 0 calc(-1px * var(--px)) 0 var(--shade);
+}
+
+.item-term {
+  font-size: 2em;
+  font-weight: 700;
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+
+.item-en {
+  font-size: 1.15em;
+  color: var(--muted);
+}
+
+.item-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: calc(2px * var(--px));
+  margin-top: calc(1px * var(--px));
+}
+
+/* vocab lists (vocab book and completion screen) */
+
+.vocab-section {
+  display: flex;
+  flex-direction: column;
+  gap: calc(2px * var(--px));
+}
+
+.vocab-section h3 {
+  display: flex;
+  align-items: center;
+  gap: calc(2px * var(--px));
+  padding-bottom: calc(1px * var(--px));
+  border-bottom: calc(1px * var(--px)) solid var(--shade);
+}
+
+.vocab-list {
+  display: flex;
+  flex-direction: column;
+  gap: calc(1px * var(--px));
+}
+
+.vocab-row {
+  display: flex;
+  align-items: center;
+  gap: calc(3px * var(--px));
+  min-width: 0;
+}
+
+.vocab-term {
+  font-size: 1.15em;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.vocab-en {
+  margin-left: auto;
+  color: var(--muted);
+  text-align: right;
+}
+
+.vocab-row.is-unseen {
+  opacity: 0.5;
+}
+
+/* keeps unseen rows aligned with the speaker buttons */
+.vocab-slot {
+  flex: none;
+  width: calc(16px * (var(--px) - 1) + 8px * var(--px));
+  height: calc(14px * var(--px));
+  border: calc(1px * var(--px)) dashed var(--muted);
+}
+
+/* venue complete */
+
+.complete {
+  align-items: center;
+  text-align: center;
+}
+
+.complete-star {
+  animation: px-hop 0.5s steps(2, jump-none) infinite alternate;
+}
+
+.complete-venue {
+  font-size: 1.5em;
+  font-weight: 700;
+}
+
+.complete-body {
+  align-self: stretch;
+  text-align: left;
+}
+
+.complete-goals {
+  display: flex;
+  flex-direction: column;
+  gap: calc(1px * var(--px));
+}
+
+.complete-goals li {
+  display: flex;
+  align-items: flex-start;
+  gap: calc(2px * var(--px));
+}
+
+.complete-next strong {
+  color: var(--orange-dark);
+}
+
+/* ---------- conversation ---------- */
+
+/* Objectives at the top, dialogue at the bottom, the middle left clear so the
+   NPC and the cat stay visible. */
+.convo {
+  position: absolute;
+  inset: 0;
+  padding: inherit;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--gap);
+  pointer-events: none;
+}
+
+.convo-top {
+  display: flex;
+  justify-content: flex-end;
+  min-height: 0;
+}
+
+.objectives {
+  display: flex;
+  flex-direction: column;
+  gap: calc(2px * var(--px));
+  width: min(340px, 100%);
+  max-height: 100%;
+  overflow-y: auto;
+}
+
+.objectives-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--gap);
+}
+
+.objectives h2 {
+  font-size: 1.1em;
+  color: var(--orange-dark);
+}
+
+.objectives-count {
+  font-weight: 700;
+}
+
+.objectives-toggle {
+  display: none;
+  padding: 0 calc(2px * var(--px));
+  border: calc(1px * var(--px)) solid var(--ink);
+  background: var(--cream);
+  color: var(--ink);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.objectives ol {
+  display: flex;
+  flex-direction: column;
+  gap: calc(1px * var(--px));
+}
+
+.objective {
+  display: flex;
+  align-items: flex-start;
+  gap: calc(2px * var(--px));
+}
+
+.objective .px-img {
+  margin-top: 0.05em;
+}
+
+.objective.is-done {
+  color: var(--green);
+}
+
+.objective.is-next {
+  font-weight: 700;
+}
+
+.objectives-alldone {
+  font-weight: 700;
+  color: var(--green);
+}
+
+.hint {
+  padding: calc(2px * var(--px));
+  border: calc(1px * var(--px)) solid var(--ink);
+  background: #fff;
+}
+
+.convo-bottom {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  gap: calc(2px * var(--px));
+  width: min(760px, 100%);
+}
+
+.convo-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(2px * var(--px));
+}
+
+.convo-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(2px * var(--px));
+  margin-left: auto;
+}
+
+.voice-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(2px * var(--px));
+  padding: calc(1px * var(--px)) calc(3px * var(--px)) calc(1px * var(--px)) calc(1px * var(--px));
+  border: calc(1px * var(--px)) solid var(--cream);
+  background: var(--ink);
+  color: var(--cream);
+  font-weight: 600;
+  pointer-events: auto;
+}
+
+/* status light */
+.voice-chip::before {
+  content: "";
+  flex: none;
+  order: 1;
+  width: calc(3px * var(--px));
+  height: calc(3px * var(--px));
+  background: #9a94a3;
+}
+
+.voice-chip > span:last-child {
+  order: 2;
+}
+
+.voice-chip.is-listen::before {
+  background: #5fd068;
+  animation: px-blink 0.8s steps(2, jump-none) infinite;
+}
+
+.voice-chip.is-speak::before {
+  background: var(--orange);
+}
+
+.voice-chip.is-wait::before {
+  background: #ffd23f;
+  animation: px-blink 0.4s steps(2, jump-none) infinite;
+}
+
+.voice-chip.is-error::before {
+  background: #ff5a4f;
+}
+
+.voice-chip.is-muted .voice-mic,
+.voice-chip.is-error .voice-mic,
+.voice-chip.is-wait .voice-mic {
+  opacity: 0.4;
+}
+
+.dialogue {
+  display: flex;
+  align-items: flex-start;
+  gap: calc(4px * var(--px));
+}
+
+.dialogue-portrait {
+  flex: none;
+  border: calc(1px * var(--px)) solid var(--ink);
+  background: #fff;
+  line-height: 0;
+}
+
+.dialogue-portrait.is-speaking {
+  animation: px-hop 0.3s steps(2, jump-none) infinite alternate;
+}
+
+.dialogue-text {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: calc(1px * var(--px));
+}
+
+.dialogue-name {
+  font-weight: 700;
+  color: var(--orange-dark);
+}
+
+.dialogue-line {
+  width: 100%;
+  max-height: 3.75em;
+  overflow-y: auto;
+  font-size: 1.3em;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.dialogue-error .dialogue-line {
+  font-size: 1.1em;
+}
+
+.dialogue-error .dialogue-name {
+  color: var(--red);
+}
+
+.dialogue-you {
+  width: 100%;
+  max-height: 2.6em;
+  overflow-y: auto;
+  color: var(--blue);
+  overflow-wrap: anywhere;
+}
+
+.dialogue-you-label {
+  font-weight: 700;
+}
+
+.is-partial {
+  opacity: 0.7;
+}
+
+.is-partial::after {
+  content: " …";
+}
+
+/* Narrow or short screens: show only the next goal unless expanded. */
+@container hud (max-width: 600px) or (max-height: 560px) {
+  .convo-top {
+    justify-content: stretch;
+  }
+
+  .objectives {
+    width: 100%;
+  }
+
+  .objectives-toggle {
+    display: inline-block;
+  }
+
+  .objectives-count {
+    display: none;
+  }
+
+  .objectives:not(.is-expanded) .objective:not(.is-next) {
+    display: none;
+  }
+
+  .dialogue {
+    gap: calc(3px * var(--px));
+  }
+
+  .dialogue-line {
+    font-size: 1.2em;
+  }
+
+  .venue-banner {
+    top: 34%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .title-cat,
+  .complete-star,
+  .dialogue-portrait.is-speaking,
+  .speaker-btn.is-playing .speaker-icon,
+  .voice-chip::before {
+    animation: none;
+  }
+}
+
+/* ---------- dev preview (/dev/hud) ---------- */
+
+.hud-preview {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: #15121a;
+}
+
+.hud-preview-controls {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 40%;
+  overflow-y: auto;
+  padding: 6px 8px;
+  background: #f2f2f2;
+  color: #111;
+  font: 12px/1.3 system-ui, sans-serif;
+}
+
+.hud-preview-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+}
+
+.hud-preview-controls button {
+  padding: 2px 6px;
+  border: 1px solid #888;
+  border-radius: 3px;
+  background: #fff;
+  color: #111;
+  font: inherit;
+  cursor: pointer;
+}
+
+.hud-preview-controls button[aria-pressed="true"] {
+  background: #111;
+  color: #fff;
+}
+
+.hud-preview-controls button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.hud-preview-state {
+  font-family: ui-monospace, monospace;
+  color: #555;
+}
+
+.hud-preview-stage {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.hud-preview-stage.is-phone {
+  --px: 2;
+  --fs: 16px;
+  flex: none;
+  width: 360px;
+  height: 640px;
+  max-height: calc(100% - 16px);
+  margin: 8px auto;
+  outline: 2px solid #777;
+  font-size: var(--fs);
+}
+
+.hud-preview-stage .app {
+  position: absolute;
+}
+
+/* stands in for the Phaser canvas */
+.hud-preview-canvas {
+  background: #5a8f5a url("/game/interiors/bakery_bg.png") center / 480px 320px no-repeat;
+  image-rendering: pixelated;
+}
+
+.hud-preview-stage.is-phone .hud-preview-canvas {
+  background-size: 240px 160px;
 }
