@@ -24,8 +24,10 @@ Also in place: the form is mounted on the page via `AuthGate`,
 `lib/supabase/progress.ts` (`useProgressSync`, store <-> database), and
 `lib/supabase/voiceGuard.ts` (sign-in check, hourly cap and session records for
 `/api/voice-session` and `/api/voice-session/judge`).
-Not yet done: the Supabase variables and `MISTRAL_API_KEY` on Vercel. Both voice
-routes now require a signed-in user, so the key can be set once the user agrees.
+`MISTRAL_API_KEY` and the two Supabase variables are set on Vercel (by the user,
+2026-11-21). Production was checked signed-in the same day: session create and
+close, the 429 cap, the judge route, and progress across sign-ins. That check left
+four test accounts in Supabase auth (`lechat-qa-*@example.com`), safe to delete.
 
 ## Ask before acting
 
