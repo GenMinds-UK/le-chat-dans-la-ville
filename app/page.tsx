@@ -22,7 +22,7 @@ const handleSignOut = () => {
 // Mounted only while venueMode is "talking" (Hud decides): this is what opens
 // the voice session. Keyed so a different shop or language is a new session.
 const renderConversation = (venue: Venue) => (
-  <LiveConversation key={`${venue.lang}-${venue.id}`} venue={venue} />
+  <LiveConversation key={`conversation-${venue.lang}-${venue.id}`} venue={venue} />
 );
 
 function GameShell() {
