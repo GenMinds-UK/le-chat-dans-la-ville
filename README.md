@@ -1,58 +1,115 @@
-# Mistral voice agent (Next.js)
+# Le chat dans la ville
 
-Browser port of the Mistral quickstart
-[Build a voice agent](https://docs.mistral.ai/studio/audio/voice-agents/quickstarts/build-a-voice-agent),
-using the [Browser (TypeScript) guide](https://docs.mistral.ai/studio/audio/voice-agents/browser)
-flow. See [PLAN.md](./PLAN.md) for the design.
+A top-down pixel-art town game for learning French, Spanish or German. You play a
+cat. Each shop (bakery, pharmacy, supermarket, bank) holds six objects you can
+inspect to see and hear their names, and a shopkeeper. Speaking to the shopkeeper
+starts a real spoken conversation in the language you chose, and a checklist of
+objectives ticks off as you get through it. Finishing a shop unlocks the next.
 
-## How it works
+Conversations run on [Mistral voice agents](https://docs.mistral.ai/studio/audio/voice-agents/browser).
+Players sign in with email and password, and progress is saved per language.
+
+Production: https://mistral-hack.genminds.co.uk (deploys from `main`).
+
+## Status
+
+The game is being built to [GAME_PLAN.md](./GAME_PLAN.md).
+
+| Part | State |
+|---|---|
+| Content: four shops in three languages | Done |
+| Game store and content contracts | Done |
+| Accounts (Supabase email and password) and progress sync | Done; sync not yet tested end to end |
+| HUD and app shell (title, language picker, quest card, item pop-up, conversation HUD, vocab book) | Built; not yet checked in a browser |
+| Phaser game (town, shop interiors, new item art) | In progress |
+| Voice layer (NPC prompts, objective tool, session hook, pronunciation clips) | In progress |
+| Voice route protection (sign-in required, hourly cap) | Not started |
+| Full playthrough in each language | Not started |
+
+`MISTRAL_API_KEY` is deliberately not set on Vercel until the voice route requires
+a signed-in user, so conversations do not work on the production URL yet.
+
+## Run it
+
+Needs Node 18.18 or later. Python 3 with Pillow is only needed to regenerate art.
+
+1. `npm install`
+2. Copy `.env.example` to `.env.local` and fill in:
+   ```
+   MISTRAL_API_KEY=                       # server only, from console.mistral.ai
+   NEXT_PUBLIC_SUPABASE_URL=              # from the Supabase project's API settings
+   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
+   ```
+3. `npm run dev` and open http://localhost:3000. The microphone works on
+   `localhost` and on HTTPS.
+
+Every conversation opens a real, billable Mistral session.
+
+## Commands
 
 ```
-Browser ──POST /api/voice-session──> route.ts ──sessions.create() + MISTRAL_API_KEY──> Mistral
-Browser <──{ id, participantToken, serverUrl }── route.ts
-Browser <═══ real-time audio (LiveKit) ═══> Mistral   (initSession from the SDK browser entry)
-Browser ──DELETE /api/voice-session?sessionId=...──> route.ts ──sessions.close()──> Mistral
+npm run dev                    # http://localhost:3000
+npm run build
+npx tsc --noEmit               # type-check
+python scripts/gen_assets.py   # regenerate all art into public/game/
+npm run gen:audio              # generate missing pronunciation clips into public/audio/
 ```
 
-The API key never reaches the browser.
+`/dev/hud` (development only) shows every HUD state without signing in, Phaser or
+a voice session.
 
-## Setup
+## How it fits together
 
-1. Put your key in `.env.local` (gitignored):
-   ```
-   MISTRAL_API_KEY=your-key
-   ```
-2. Run:
-   ```
-   npm run dev
-   ```
-3. Open http://localhost:3000 (localhost is a secure context, so the mic works),
-   click **Start talking**, allow microphone access, and speak.
+```
+app/page.tsx            shell: title -> sign in -> language picker -> game + HUD
+game/                   Phaser: town, shop interiors, movement, interaction
+components/hud/         React overlays on top of the canvas
+components/auth/        sign-in and sign-up form
+lib/state/gameStore.ts  zustand store; the only thing Phaser and React share
+lib/voice/              NPC prompt builder, objective tool, useVoiceSession hook
+lib/supabase/           browser and server clients, auth helpers, progress sync
+app/api/voice-session/  creates and closes Mistral voice sessions
+content/                venues: venues.ts is language-neutral, <lang>/<venue>.ts holds the strings
+public/game/            generated art; manifest.json lists every file
+public/audio/           pre-generated pronunciation clips, <lang>/<id>.mp3
+scripts/                gen_assets.py (art), gen_audio.mjs (clips), sync-agents.mjs
+supabase/migrations/    database schema
+```
 
-## Verify
+Phaser and React talk only through the store: Phaser calls actions such as
+`enterVenue`, `inspectItem` and `startConversation`, and the HUD renders from the
+resulting state.
 
-- Transcript lines appear as `user: ...` then `assistant: ...` (like the quickstart).
-- The agent's voice plays out loud.
-- **Hang up** stops the mic and fires the DELETE (check the Network tab).
-- `MISTRAL_API_KEY` appears nowhere in the client bundle.
+Voice sessions:
 
-## Files
+```
+Browser --POST /api/voice-session {venueId, lang}--> route (holds MISTRAL_API_KEY)
+        <-- { id, participantToken, serverUrl } --
+Browser <== realtime audio (LiveKit) ==> Mistral
+Browser --DELETE /api/voice-session?sessionId=...--> route --> sessions.close()
+```
 
-- `app/api/voice-session/route.ts` — POST creates a session server-side, DELETE closes it
-- `components/VoiceAgent.tsx` — client UI: start/stop, mute, live transcript
-- `app/page.tsx`, `app/layout.tsx`, `app/globals.css` — page shell
-- `public/` — static assets, served at the root URL (e.g. `public/images/logo.svg` → `/images/logo.svg`)
-  - `public/images/` — logos, screenshots, UI imagery
-  - `public/audio/` — ring/connect sounds, notification chimes, sample voice clips
-  - `public/avatars/` — agent/user avatar images
-    - `mistral-cat.svg` / `mistral-cat.png` — Mistral's "abstract pixel cat" emblem (Icon / Gradient, preferred per brand guidelines), from the official brand kit `Mistral_Logos_2026.zip` at https://mistral.ai/brand/ — trademark of Mistral AI, use per their guidelines
-    - `mistral-cat-white.png` — monochrome white icon, for dark backgrounds
-  - `public/icons/` — PWA icons, favicon variants (drop `app/icon.svg` in `app/` for the favicon convention)
-  - `public/fonts/` — custom font files (prefer `next/font` when possible)
+The API key never reaches the browser, and the server builds the NPC's prompt from
+`content/` so the browser cannot change it. A session opens only when the player
+speaks to the shopkeeper, never on entering a shop. Object pronunciation plays
+pre-generated clips, so it costs nothing at play time.
 
-## Production notes
+## Working on it
 
-- Protect `POST /api/voice-session` with your own auth + rate limiting (it is public otherwise).
-- Serve over HTTPS so `getUserMedia` works.
-- Optional: client-side tools via `functionTool` from
-  `@mistralai/mistralai/extra/voice-agents`, saved agents via `client.audio.agents.create`.
+[AGENTS.md](./AGENTS.md) is the entry point for contributors and coding agents: the
+rules, who owns which folder, and the skills in `.agents/skills/` that document
+each area (art, voice, content, deployment, playtesting).
+
+- Art is never edited by hand: change `scripts/gen_assets.py` and re-run it.
+- Never hard-code a language: take it from the store's `lang` or the venue's `lang`.
+- Interface text is English; NPC speech and vocabulary are in the chosen language at A1–A2.
+- Never print or commit secrets.
+
+[PLAN.md](./PLAN.md) is the plan for the original voice-agent prototype this grew
+from, kept for reference.
+
+## Credits
+
+The game's art and characters are original, generated by `scripts/gen_assets.py`.
+`public/avatars/mistral-cat.*` is Mistral AI's pixel-cat emblem from their brand
+kit (https://mistral.ai/brand/), a trademark of Mistral AI.
