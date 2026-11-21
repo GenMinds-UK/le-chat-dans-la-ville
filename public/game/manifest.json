@@ -1,0 +1,377 @@
+{
+ "player/cat.png": {
+  "w": 256,
+  "h": 64,
+  "frameW": 32,
+  "frameH": 32,
+  "cols": 8,
+  "rows": 2,
+  "directions": [
+   "down",
+   "down_left",
+   "left",
+   "up_left",
+   "up",
+   "up_right",
+   "right",
+   "down_right"
+  ],
+  "rowNames": [
+   "idle",
+   "hop"
+  ],
+  "anchor": "bottom-centre"
+ },
+ "player/shadow.png": {
+  "w": 16,
+  "h": 6
+ },
+ "tiles/town_tiles.png": {
+  "w": 112,
+  "h": 16,
+  "tileSize": 16,
+  "tiles": [
+   "grass",
+   "grass_tuft",
+   "flowers",
+   "path",
+   "cobble",
+   "water_0",
+   "water_1"
+  ]
+ },
+ "props/tree.png": {
+  "w": 32,
+  "h": 40,
+  "anchor": "bottom-centre"
+ },
+ "props/bush.png": {
+  "w": 16,
+  "h": 16,
+  "anchor": "bottom-centre"
+ },
+ "props/lamp.png": {
+  "w": 16,
+  "h": 32,
+  "anchor": "bottom-centre"
+ },
+ "props/bench.png": {
+  "w": 32,
+  "h": 16,
+  "anchor": "bottom-centre"
+ },
+ "props/signpost.png": {
+  "w": 16,
+  "h": 24,
+  "anchor": "bottom-centre"
+ },
+ "props/fence.png": {
+  "w": 16,
+  "h": 16,
+  "anchor": "bottom-centre"
+ },
+ "props/fountain.png": {
+  "w": 48,
+  "h": 40,
+  "anchor": "bottom-centre"
+ },
+ "items/bread.png": {
+  "w": 16,
+  "h": 16
+ },
+ "items/croissant.png": {
+  "w": 16,
+  "h": 16
+ },
+ "items/cupcake.png": {
+  "w": 16,
+  "h": 16
+ },
+ "items/pills.png": {
+  "w": 16,
+  "h": 16
+ },
+ "items/syrup.png": {
+  "w": 16,
+  "h": 16
+ },
+ "items/bandage.png": {
+  "w": 16,
+  "h": 16
+ },
+ "items/apple.png": {
+  "w": 16,
+  "h": 16
+ },
+ "items/milk.png": {
+  "w": 16,
+  "h": 16
+ },
+ "items/cheese.png": {
+  "w": 16,
+  "h": 16
+ },
+ "items/coin.png": {
+  "w": 16,
+  "h": 16
+ },
+ "items/banknote.png": {
+  "w": 16,
+  "h": 16
+ },
+ "items/card.png": {
+  "w": 16,
+  "h": 16
+ },
+ "items/cart.png": {
+  "w": 16,
+  "h": 16
+ },
+ "items/cross.png": {
+  "w": 16,
+  "h": 16
+ },
+ "ui/star.png": {
+  "w": 16,
+  "h": 16
+ },
+ "ui/lock.png": {
+  "w": 16,
+  "h": 16
+ },
+ "ui/mic.png": {
+  "w": 16,
+  "h": 16
+ },
+ "ui/exclaim.png": {
+  "w": 16,
+  "h": 16
+ },
+ "ui/arrow.png": {
+  "w": 16,
+  "h": 16
+ },
+ "ui/check_off.png": {
+  "w": 12,
+  "h": 12
+ },
+ "ui/check_on.png": {
+  "w": 12,
+  "h": 12
+ },
+ "ui/panel.png": {
+  "w": 24,
+  "h": 24,
+  "nineSlice": 8
+ },
+ "ui/button.png": {
+  "w": 24,
+  "h": 16,
+  "nineSlice": 6
+ },
+ "ui/button_pressed.png": {
+  "w": 24,
+  "h": 16,
+  "nineSlice": 6
+ },
+ "npcs/baker.png": {
+  "w": 32,
+  "h": 32,
+  "anchor": "bottom-centre"
+ },
+ "npcs/baker_portrait.png": {
+  "w": 24,
+  "h": 24
+ },
+ "npcs/pharmacist.png": {
+  "w": 32,
+  "h": 32,
+  "anchor": "bottom-centre"
+ },
+ "npcs/pharmacist_portrait.png": {
+  "w": 24,
+  "h": 24
+ },
+ "npcs/cashier.png": {
+  "w": 32,
+  "h": 32,
+  "anchor": "bottom-centre"
+ },
+ "npcs/cashier_portrait.png": {
+  "w": 24,
+  "h": 24
+ },
+ "npcs/banker.png": {
+  "w": 32,
+  "h": 32,
+  "anchor": "bottom-centre"
+ },
+ "npcs/banker_portrait.png": {
+  "w": 24,
+  "h": 24
+ },
+ "buildings/bakery.png": {
+  "w": 96,
+  "h": 80,
+  "anchor": "bottom-centre",
+  "door": {
+   "x": 48,
+   "y": 80
+  }
+ },
+ "buildings/pharmacy.png": {
+  "w": 96,
+  "h": 80,
+  "anchor": "bottom-centre",
+  "door": {
+   "x": 48,
+   "y": 80
+  }
+ },
+ "buildings/supermarket.png": {
+  "w": 96,
+  "h": 80,
+  "anchor": "bottom-centre",
+  "door": {
+   "x": 48,
+   "y": 80
+  }
+ },
+ "buildings/bank.png": {
+  "w": 96,
+  "h": 80,
+  "anchor": "bottom-centre",
+  "door": {
+   "x": 48,
+   "y": 80
+  }
+ },
+ "buildings/house_red.png": {
+  "w": 64,
+  "h": 64,
+  "anchor": "bottom-centre",
+  "decorative": true,
+  "door": {
+   "x": 45,
+   "y": 64
+  }
+ },
+ "buildings/house_blue.png": {
+  "w": 64,
+  "h": 64,
+  "anchor": "bottom-centre",
+  "decorative": true,
+  "door": {
+   "x": 45,
+   "y": 64
+  }
+ },
+ "interiors/bakery_bg.png": {
+  "w": 240,
+  "h": 160,
+  "npcFeet": {
+   "x": 120,
+   "y": 76
+  },
+  "talkSpot": {
+   "x": 120,
+   "y": 118
+  },
+  "entry": {
+   "x": 120,
+   "y": 150
+  },
+  "exit": {
+   "x": 104,
+   "y": 152,
+   "w": 32,
+   "h": 8
+  }
+ },
+ "interiors/bakery_fg.png": {
+  "w": 240,
+  "h": 160,
+  "layer": "draw above NPC"
+ },
+ "interiors/pharmacy_bg.png": {
+  "w": 240,
+  "h": 160,
+  "npcFeet": {
+   "x": 120,
+   "y": 76
+  },
+  "talkSpot": {
+   "x": 120,
+   "y": 118
+  },
+  "entry": {
+   "x": 120,
+   "y": 150
+  },
+  "exit": {
+   "x": 104,
+   "y": 152,
+   "w": 32,
+   "h": 8
+  }
+ },
+ "interiors/pharmacy_fg.png": {
+  "w": 240,
+  "h": 160,
+  "layer": "draw above NPC"
+ },
+ "interiors/supermarket_bg.png": {
+  "w": 240,
+  "h": 160,
+  "npcFeet": {
+   "x": 120,
+   "y": 76
+  },
+  "talkSpot": {
+   "x": 120,
+   "y": 118
+  },
+  "entry": {
+   "x": 120,
+   "y": 150
+  },
+  "exit": {
+   "x": 104,
+   "y": 152,
+   "w": 32,
+   "h": 8
+  }
+ },
+ "interiors/supermarket_fg.png": {
+  "w": 240,
+  "h": 160,
+  "layer": "draw above NPC"
+ },
+ "interiors/bank_bg.png": {
+  "w": 240,
+  "h": 160,
+  "npcFeet": {
+   "x": 120,
+   "y": 76
+  },
+  "talkSpot": {
+   "x": 120,
+   "y": 118
+  },
+  "entry": {
+   "x": 120,
+   "y": 150
+  },
+  "exit": {
+   "x": 104,
+   "y": 152,
+   "w": 32,
+   "h": 8
+  }
+ },
+ "interiors/bank_fg.png": {
+  "w": 240,
+  "h": 160,
+  "layer": "draw above NPC"
+ }
+}

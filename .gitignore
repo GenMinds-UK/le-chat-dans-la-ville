@@ -1,0 +1,12 @@
+/node_modules
+/.next
+/out
+*.tsbuildinfo
+next-env.d.ts
+
+# never commit secrets
+.env*.local
+.env
+
+# local list of copy targets for npm run agents:sync
+.agents/sync-targets.local.json

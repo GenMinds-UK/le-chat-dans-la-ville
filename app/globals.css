@@ -1,0 +1,164 @@
+:root {
+  --bg: #0f1115;
+  --panel: #171a21;
+  --text: #e8eaf0;
+  --muted: #9aa3b2;
+  --accent: #ff7000;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2rem 1rem 4rem;
+}
+
+h1 {
+  font-size: 1.5rem;
+  margin-bottom: 0.25rem;
+}
+
+h1 img {
+  width: 28px;
+  height: 28px;
+  vertical-align: -6px;
+  margin-right: 0.5rem;
+}
+
+.subtitle {
+  color: var(--muted);
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+}
+
+.controls {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+button {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+button.secondary {
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid #2a2f3a;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.status-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.status-row .status {
+  margin-bottom: 0;
+}
+
+/* Agent avatar: bare pixel-cat mark, no frame/background (brand guidelines) */
+.avatar {
+  display: inline-flex;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar img {
+  width: 40px;
+  height: 40px;
+  display: block;
+}
+
+.avatar.live img {
+  filter: drop-shadow(0 0 8px rgba(74, 222, 128, 0.55));
+}
+
+.avatar.speaking img {
+  animation: avatar-pulse 1s ease-in-out infinite;
+}
+
+@keyframes avatar-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.12);
+  }
+}
+
+.status {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.status .live {
+  color: #4ade80;
+}
+
+.transcript {
+  background: var(--panel);
+  border: 1px solid #2a2f3a;
+  border-radius: 12px;
+  padding: 1rem;
+  min-height: 200px;
+  max-height: 50vh;
+  overflow-y: auto;
+  list-style: none;
+  margin: 0;
+  padding-left: 1rem;
+}
+
+.transcript li {
+  margin: 0.4rem 0;
+  line-height: 1.4;
+}
+
+.transcript .role-user {
+  color: #7cc4ff;
+}
+
+.transcript .role-assistant {
+  color: #ffb27c;
+}
+
+.transcript .line-avatar {
+  width: 16px;
+  height: 16px;
+  vertical-align: -3px;
+  margin-right: 0.35rem;
+}
+
+.error {
+  color: #f87171;
+  font-size: 0.9rem;
+  margin-top: 0.75rem;
+  white-space: pre-wrap;
+}
