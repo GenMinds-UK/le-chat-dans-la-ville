@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import AuthGate from "@/components/auth/AuthGate";
 import Hud from "@/components/hud/Hud";
 import LiveConversation from "@/components/hud/LiveConversation";
-import { TitleHeader, TitleMenu } from "@/components/hud/TitleScreen";
+import { TitleHeader, TitleMenu, VibeBadge } from "@/components/hud/TitleScreen";
 import type { Venue } from "@/content/types";
 import { useGameStore } from "@/lib/state/gameStore";
 import { signOut } from "@/lib/supabase/auth";
@@ -57,6 +57,8 @@ export default function Home() {
           {onTitle ? <TitleMenu onSignOut={handleSignOut} /> : <GameShell />}
         </AuthGate>
       </div>
+      {/* Landing / login screen only: "Built with Mistral Vibe" in the footer. */}
+      {onTitle && <VibeBadge />}
     </div>
   );
 }
