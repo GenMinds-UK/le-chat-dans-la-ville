@@ -17,6 +17,8 @@ export type TranscriptLine = {
 export type GameState = {
   user: { id: string; email: string } | null;
   lang: Lang | null; // null until chosen
+  /** False from sign-in until the account's saved language and progress have been loaded. */
+  profileLoaded: boolean;
   scene: "title" | "town" | "venue";
   activeVenueId: VenueId | null;
   venueMode: "explore" | "talking"; // explore = walking round the shop
@@ -57,6 +59,7 @@ const addUnique = <T,>(list: T[], ...items: T[]): T[] => {
 export const useGameStore = create<GameState>()((set, get) => ({
   user: null,
   lang: null,
+  profileLoaded: false,
   scene: "title",
   activeVenueId: null,
   venueMode: "explore",
@@ -70,13 +73,16 @@ export const useGameStore = create<GameState>()((set, get) => ({
 
   setUser: (user) => {
     if (user) {
-      set({ user });
+      // Same user again (token refresh, second tab event): keep everything.
+      if (get().user?.id === user.id) return;
+      set({ user, profileLoaded: false });
       return;
     }
     // Signed out: back to a clean title screen.
     set({
       user: null,
       lang: null,
+      profileLoaded: false,
       scene: "title",
       activeVenueId: null,
       venueMode: "explore",
@@ -112,6 +118,7 @@ export const useGameStore = create<GameState>()((set, get) => ({
   hydrateProgress: ({ lang, completedVenues, vocabSeen }) =>
     set((s) => ({
       lang,
+      profileLoaded: true,
       // Keep anything done locally while the load was in flight.
       completedVenues: s.lang === lang ? addUnique(completedVenues, ...s.completedVenues) : completedVenues,
       vocabSeen: s.lang === lang ? addUnique(vocabSeen, ...s.vocabSeen) : vocabSeen,
