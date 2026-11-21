@@ -2,6 +2,13 @@ import { Mistral } from "@mistralai/mistralai";
 import { z } from "zod";
 import { getVenue, hasVenue, isLang, isVenueId } from "@/content";
 import { buildNpcConfig } from "@/lib/voice/buildNpcConfig";
+import {
+  markSessionEnded,
+  ownsSession,
+  recordSession,
+  requireSessionAllowance,
+  requireUser,
+} from "@/lib/supabase/voiceGuard";
 
 // Server-side only: the API key is used here and in ./judge/route.ts, nowhere
 // else. The browser sends { venueId, lang } and receives just
@@ -28,15 +35,10 @@ const errorMessage = (err: unknown, fallback: string): string => {
 };
 
 export async function POST(request: Request) {
-  // ---------------------------------------------------------------------
-  // PHASE 3 (platform): before anything else in this handler,
-  //   1. require a signed-in user (401 { error } if there is none);
-  //   2. cap sessions per user per hour using `voice_sessions`
-  //      (429 { error } when over the cap).
-  // After a successful create below, insert the `voice_sessions` row
-  // (id = session.id, user_id, lang, venue_id, started_at).
-  // The client already turns 401 and 429 into readable messages.
-  // ---------------------------------------------------------------------
+  // A signed-in user is required (401) and sessions are capped per user per
+  // hour (429). Without this anyone could spend the Mistral key.
+  const guard = await requireSessionAllowance();
+  if (!guard.ok) return guard.response;
 
   if (!process.env.MISTRAL_API_KEY) {
     return Response.json(
@@ -60,7 +62,15 @@ export async function POST(request: Request) {
   try {
     const session = await client.audio.sessions.create(buildNpcConfig(getVenue(lang, venueId)));
 
-    // PHASE 3 (platform): record the session in `voice_sessions` here.
+    // The row is what the hourly cap counts and what lets the owner close the
+    // session, so a session that cannot be recorded is not handed out.
+    if (!(await recordSession(guard, { id: session.id, lang, venueId }))) {
+      await client.audio.sessions.close({ sessionId: session.id }).catch(() => {});
+      return Response.json(
+        { error: "Could not start the conversation. Try again in a moment." },
+        { status: 503 },
+      );
+    }
 
     // Only the connection credentials go to the browser, never the key.
     return Response.json({
@@ -75,17 +85,23 @@ export async function POST(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  // PHASE 3 (platform): require a signed-in user, check the session is theirs
-  // in `voice_sessions`, and set its `ended_at`. The browser calls this with
+  // Only the signed-in owner can close a session. The browser calls this with
   // fetch(..., { keepalive: true }) on tab close, so cookies are sent as usual.
+  const guard = await requireUser();
+  if (!guard.ok) return guard.response;
 
   const sessionId = new URL(request.url).searchParams.get("sessionId");
   if (!sessionId) {
     return Response.json({ error: "missing sessionId" }, { status: 400 });
   }
 
+  if (!(await ownsSession(guard, sessionId))) {
+    return Response.json({ error: "unknown session" }, { status: 404 });
+  }
+
   try {
     await client.audio.sessions.close({ sessionId });
+    await markSessionEnded(guard, sessionId);
     return new Response(null, { status: 204 });
   } catch (err) {
     console.error("[voice-session] close failed:", err);

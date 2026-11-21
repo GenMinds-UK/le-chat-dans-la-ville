@@ -8,6 +8,7 @@ import {
   buildJudgeMessages,
   parseJudgeReply,
 } from "@/lib/voice/judgeObjectives";
+import { hasOpenSession, judgeRateLimited, requireUser } from "@/lib/supabase/voiceGuard";
 
 // POST /api/voice-session/judge
 //   { venueId, lang, done: string[], lines: { role, content }[] }
@@ -38,12 +39,17 @@ const Body = z.object({
 });
 
 export async function POST(request: Request) {
-  // ---------------------------------------------------------------------
-  // PHASE 3 (platform): this route spends the Mistral key too. Require a
-  // signed-in user here (401), and rate-limit it per user; a real
-  // conversation makes one call per player turn, so about 60 a minute is
-  // already generous.
-  // ---------------------------------------------------------------------
+  // This route spends the Mistral key too: it needs a signed-in user (401),
+  // is rate-limited per user (429), and only answers while that user has a
+  // conversation open, so its spend is bounded by the voice-session cap.
+  const guard = await requireUser();
+  if (!guard.ok) return guard.response;
+  if (judgeRateLimited(guard.user.id)) {
+    return Response.json({ error: "too many requests" }, { status: 429 });
+  }
+  if (!(await hasOpenSession(guard))) {
+    return Response.json({ error: "no conversation is open" }, { status: 403 });
+  }
 
   if (!process.env.MISTRAL_API_KEY) {
     return Response.json({ error: "MISTRAL_API_KEY is not set on the server" }, { status: 500 });
